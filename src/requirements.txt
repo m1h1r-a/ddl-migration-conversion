@@ -1,0 +1,6 @@
+greenlet==3.0.3
+mysql-connector-python==9.0.0
+psycopg2==2.9.9
+PyYAML==6.0.1
+SQLAlchemy==2.0.31
+typing_extensions==4.12.2
