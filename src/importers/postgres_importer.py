@@ -14,13 +14,15 @@ class PostgresImporter:
             cur = conn.cursor()
             
             execution_count = 0
+            done_executing = 0
             total_statements = len(ddl_statements)
             for ddl in ddl_statements:
-                logging.debug(f"No. of DDL Statements Left to Be Executed: {len(ddl_statements)}")
+                logging.debug(f"No. of DDL Statements Left to Be Executed: {total_statements - done_executing}")
                 try:
                     execution_count+=1
                     cur.execute(ddl)
                     conn.commit()
+                    done_executing+=1
                     logging.debug(f"Executed : {ddl}")
                     
                     

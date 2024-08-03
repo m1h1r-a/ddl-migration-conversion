@@ -1,14 +1,8 @@
-03-08-2024 19:52:08 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS orders (
-    OrderID INT NOT NULL AUTO_INCREMENT,
-    OrderDate date NOT NULL,
-    TotalAmount DECIMAL(10,2) NOT NULL,
-    CustomerID INT,
-    EmployeeID INT,
-    PRIMARY KEY (OrderID),
-    FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
-    FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
-) ENGINE=InnoDB;
-03-08-2024 19:52:08 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS employees (
+03-08-2024 22:34:14 - DEBUG - No. of DDL Statements Left to Be Executed: 3
+03-08-2024 22:34:14 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'customer'
+03-08-2024 22:34:14 - INFO -  RETRYING...
+03-08-2024 22:34:14 - DEBUG - No. of DDL Statements Left to Be Executed: 3
+03-08-2024 22:34:14 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS employees (
     EmployeeID INT NOT NULL AUTO_INCREMENT,
     FirstName VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
@@ -59,7 +53,8 @@
     Notes TEXT,
     PRIMARY KEY (EmployeeID)
 ) ENGINE=InnoDB;
-03-08-2024 19:52:08 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS customer (
+03-08-2024 22:34:14 - DEBUG - No. of DDL Statements Left to Be Executed: 2
+03-08-2024 22:34:14 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS customer (
     CustomerID INT NOT NULL AUTO_INCREMENT,
     CustomerName VARCHAR(100) NOT NULL,
     ContactNumber VARCHAR(20) DEFAULT NULL,
@@ -69,74 +64,8 @@
     PRIMARY KEY (CustomerID),
     FOREIGN KEY (SalesRepID) REFERENCES employees(EmployeeID)
 ) ENGINE=InnoDB;
-03-08-2024 19:52:08 - DEBUG - No. of DDL Statements Left to Be Executed: 3
-03-08-2024 19:52:08 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'customer'
-03-08-2024 19:52:08 - INFO -  RETRYING...
-03-08-2024 19:52:08 - DEBUG - No. of DDL Statements Left to Be Executed: 4
-03-08-2024 19:52:08 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS employees (
-    EmployeeID INT NOT NULL AUTO_INCREMENT,
-    FirstName VARCHAR(100) NOT NULL,
-    LastName VARCHAR(100) NOT NULL,
-    MiddleName VARCHAR(100) DEFAULT NULL,
-    DateOfBirth date,
-    Gender CHAR(1) DEFAULT NULL,
-    HireDate date,
-    JobTitle VARCHAR(100) DEFAULT NULL,
-    Department VARCHAR(100) DEFAULT NULL,
-    ManagerID INT,
-    Salary DECIMAL(10,2) DEFAULT NULL,
-    Bonus DECIMAL(10,2) DEFAULT NULL,
-    CommissionPct DECIMAL(10,2) DEFAULT NULL,
-    Email VARCHAR(255) DEFAULT NULL,
-    PhoneNumber VARCHAR(20) DEFAULT NULL,
-    StreetAddress VARCHAR(255) DEFAULT NULL,
-    City VARCHAR(100) DEFAULT NULL,
-    State VARCHAR(100) DEFAULT NULL,
-    ZipCode VARCHAR(20) DEFAULT NULL,
-    Country VARCHAR(100) DEFAULT NULL,
-    EmergencyContactName VARCHAR(100) DEFAULT NULL,
-    EmergencyContactPhone VARCHAR(20) DEFAULT NULL,
-    EmergencyContactRelation VARCHAR(50) DEFAULT NULL,
-    EmploymentStatus VARCHAR(50) DEFAULT NULL,
-    WorkLocation VARCHAR(100) DEFAULT NULL,
-    WorkPhone VARCHAR(20) DEFAULT NULL,
-    Extension VARCHAR(10) DEFAULT NULL,
-    WorkEmail VARCHAR(255) DEFAULT NULL,
-    IsFullTime boolean,
-    IsPartTime boolean,
-    IsContractor boolean,
-    ContractStartDate date,
-    ContractEndDate date,
-    HoursPerWeek DECIMAL(10,2) DEFAULT NULL,
-    VacationDays INT,
-    SickDays INT,
-    IsEligibleForBenefits boolean,
-    HealthInsuranceProvider VARCHAR(100) DEFAULT NULL,
-    RetirementPlanProvider VARCHAR(100) DEFAULT NULL,
-    LastPromotionDate date,
-    LastPerformanceReviewDate date,
-    PerformanceScore DECIMAL(10,2) DEFAULT NULL,
-    YearsAtCompany DECIMAL(10,2) DEFAULT NULL,
-    LanguagesSpoken VARCHAR(255) DEFAULT NULL,
-    Skills VARCHAR(255) DEFAULT NULL,
-    EducationLevel VARCHAR(50) DEFAULT NULL,
-    Certifications VARCHAR(255) DEFAULT NULL,
-    Notes TEXT,
-    PRIMARY KEY (EmployeeID)
-) ENGINE=InnoDB;
-03-08-2024 19:52:08 - DEBUG - No. of DDL Statements Left to Be Executed: 4
-03-08-2024 19:52:08 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS customer (
-    CustomerID INT NOT NULL AUTO_INCREMENT,
-    CustomerName VARCHAR(100) NOT NULL,
-    ContactNumber VARCHAR(20) DEFAULT NULL,
-    Email VARCHAR(255) DEFAULT NULL,
-    SalesRepID INT,
-    Address VARCHAR(255) DEFAULT NULL,
-    PRIMARY KEY (CustomerID),
-    FOREIGN KEY (SalesRepID) REFERENCES employees(EmployeeID)
-) ENGINE=InnoDB;
-03-08-2024 19:52:08 - DEBUG - No. of DDL Statements Left to Be Executed: 4
-03-08-2024 19:52:08 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS orders (
+03-08-2024 22:34:14 - DEBUG - No. of DDL Statements Left to Be Executed: 1
+03-08-2024 22:34:14 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS orders (
     OrderID INT NOT NULL AUTO_INCREMENT,
     OrderDate date NOT NULL,
     TotalAmount DECIMAL(10,2) NOT NULL,
@@ -146,5 +75,5 @@
     FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
     FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
 ) ENGINE=InnoDB;
-03-08-2024 19:52:08 - INFO - Import to MySQL Succesfull!
-03-08-2024 19:52:08 - INFO - Migration completed successfully.
+03-08-2024 22:34:14 - INFO - Import to MySQL Succesfull!
+03-08-2024 22:34:14 - INFO - Migration completed successfully.

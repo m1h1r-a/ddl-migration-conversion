@@ -39,6 +39,6 @@ class PostgresToMySQL():
         mysql_ddl = re.sub(r'public.', '',mysql_ddl, flags=re.IGNORECASE)
         
         
-        logging.debug(f"After Converting: {mysql_ddl}")
+        # logging.debug(f"After Converting: {mysql_ddl}")
         
         return mysql_ddl
