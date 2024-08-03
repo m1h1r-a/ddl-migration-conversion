@@ -15,7 +15,7 @@ from importers.mysql_importer import MySQLImporter
 
 # logging time error and messages
 #debug->info->warning->error->critical
-logging.basicConfig(filename='ddl_migration.log', filemode='w', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', datefmt="%d-%m-%Y %H:%M:%S")
+logging.basicConfig(filename='ddl_migration.log', filemode='w', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s', datefmt="%d-%m-%Y %H:%M:%S")
 
 
 
@@ -42,7 +42,7 @@ class MySQLToPostgresMigrator:
             raise
         
 class PostgresToMySQLMigrator:
-    def __init__(self, source_config , destination_config):
+    def __init__(self, source_config: Dict[str, str], destination_config: Dict[str, str]):
         self.exporter = PostgresExtractor(source_config)
         self.converter = PostgresToMySQL()
         self.importer = MySQLImporter(destination_config)
