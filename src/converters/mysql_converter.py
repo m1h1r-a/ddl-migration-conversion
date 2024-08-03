@@ -38,7 +38,7 @@ class MySQLtoPostgres:
 
         # foreign key support    
         postgres_ddl = re.sub(r'KEY\s+"[\w]+"?\s+\("[\w]+"\),\n\s+', '',postgres_ddl,flags=re.IGNORECASE)
-        postgres_ddl = re.sub(r'CONSTRAINT\s+"[^"]+"\s+', '',postgres_ddl,flags=re.IGNORECASE)
+        postgres_ddl = re.sub(r'\n\s*CONSTRAINT\s+"[^"]+"\s+', '',postgres_ddl,flags=re.IGNORECASE)
       
         
         

@@ -1,4 +1,14 @@
-03-08-2024 18:44:47 - DEBUG - After Converting: CREATE TABLE employees (
+03-08-2024 19:52:08 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS orders (
+    OrderID INT NOT NULL AUTO_INCREMENT,
+    OrderDate date NOT NULL,
+    TotalAmount DECIMAL(10,2) NOT NULL,
+    CustomerID INT,
+    EmployeeID INT,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
+    FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
+) ENGINE=InnoDB;
+03-08-2024 19:52:08 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS employees (
     EmployeeID INT NOT NULL AUTO_INCREMENT,
     FirstName VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
@@ -49,7 +59,21 @@
     Notes TEXT,
     PRIMARY KEY (EmployeeID)
 ) ENGINE=InnoDB;
-03-08-2024 18:44:47 - INFO - Executed : CREATE TABLE employees (
+03-08-2024 19:52:08 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS customer (
+    CustomerID INT NOT NULL AUTO_INCREMENT,
+    CustomerName VARCHAR(100) NOT NULL,
+    ContactNumber VARCHAR(20) DEFAULT NULL,
+    Email VARCHAR(255) DEFAULT NULL,
+    SalesRepID INT,
+    Address VARCHAR(255) DEFAULT NULL,
+    PRIMARY KEY (CustomerID),
+    FOREIGN KEY (SalesRepID) REFERENCES employees(EmployeeID)
+) ENGINE=InnoDB;
+03-08-2024 19:52:08 - DEBUG - No. of DDL Statements Left to Be Executed: 3
+03-08-2024 19:52:08 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'customer'
+03-08-2024 19:52:08 - INFO -  RETRYING...
+03-08-2024 19:52:08 - DEBUG - No. of DDL Statements Left to Be Executed: 4
+03-08-2024 19:52:08 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS employees (
     EmployeeID INT NOT NULL AUTO_INCREMENT,
     FirstName VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
@@ -100,5 +124,27 @@
     Notes TEXT,
     PRIMARY KEY (EmployeeID)
 ) ENGINE=InnoDB;
-03-08-2024 18:44:47 - INFO - Import to MySQL Succesful!
-03-08-2024 18:44:47 - INFO - Migration completed successfully.
+03-08-2024 19:52:08 - DEBUG - No. of DDL Statements Left to Be Executed: 4
+03-08-2024 19:52:08 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS customer (
+    CustomerID INT NOT NULL AUTO_INCREMENT,
+    CustomerName VARCHAR(100) NOT NULL,
+    ContactNumber VARCHAR(20) DEFAULT NULL,
+    Email VARCHAR(255) DEFAULT NULL,
+    SalesRepID INT,
+    Address VARCHAR(255) DEFAULT NULL,
+    PRIMARY KEY (CustomerID),
+    FOREIGN KEY (SalesRepID) REFERENCES employees(EmployeeID)
+) ENGINE=InnoDB;
+03-08-2024 19:52:08 - DEBUG - No. of DDL Statements Left to Be Executed: 4
+03-08-2024 19:52:08 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS orders (
+    OrderID INT NOT NULL AUTO_INCREMENT,
+    OrderDate date NOT NULL,
+    TotalAmount DECIMAL(10,2) NOT NULL,
+    CustomerID INT,
+    EmployeeID INT,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
+    FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
+) ENGINE=InnoDB;
+03-08-2024 19:52:08 - INFO - Import to MySQL Succesfull!
+03-08-2024 19:52:08 - INFO - Migration completed successfully.

@@ -9,6 +9,7 @@ class PostgresToMySQL():
         mysql_ddl = postgres_ddl
         
         mapper = {
+            r'CREATE TABLE' : 'CREATE TABLE IF NOT EXISTS',
             r'\bserial\b': 'INT AUTO_INCREMENT',
             r'DEFAULT nextval\(\'"\w+"\'::regclass\)': 'AUTO_INCREMENT',
             r'\btimestamp(\s+with\s+time\s+zone)?\b': 'DATETIME',
@@ -21,6 +22,10 @@ class PostgresToMySQL():
             r'character' : 'CHAR',
             r'::bpchar' : '',
             r'::numeric' : '',
+            r' CONSTRAINT \w+' : '',
+            r'PRIMARY\s+KEY\s+\("([^"]+)"\)' : r'PRIMARY KEY (\1)',
+            r'FOREIGN\s+KEY\s+\("([^"]+)"\)\s+REFERENCES\s+([^"]+)\("([^"]+)"\)' : r'FOREIGN KEY (\1) REFERENCES \2(\3)',
+            r'ON UPDATE CASCADE ON DELETE CASCADE' : '',
         }
         
         for postgres_map,mysql_map in mapper.items():
