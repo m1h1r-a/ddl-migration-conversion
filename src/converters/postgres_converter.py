@@ -1,5 +1,6 @@
 import re
 
+#postgres ddl to mysql ddl
 class PostgresToMySQL():
     
     def convert_to_mysql(postgres_ddl):

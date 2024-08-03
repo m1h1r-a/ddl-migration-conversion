@@ -91,6 +91,8 @@ class PostgresExtractor():
 
         except (Exception, psycopg2.Error) as error:
             print("Error while connecting to PostgreSQL", error)
+            
+        logging.debug(f"DDL Statements Post Extraction: {ddl_list}")
 
         return ddl_list
 

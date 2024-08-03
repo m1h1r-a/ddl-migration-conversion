@@ -1,9 +1,0 @@
-02-08-2024 15:12:04 - INFO - Successfully extracted 3 DDL statements from MySQL
-02-08-2024 15:12:04 - WARNING - Execution Failed: relation "employees" does not exist
-
-02-08-2024 15:12:04 - INFO -  RETRYING...
-02-08-2024 15:12:04 - WARNING - Execution Failed: relation "customer" does not exist
-
-02-08-2024 15:12:04 - INFO -  RETRYING...
-02-08-2024 15:12:04 - INFO - Import Succesfull to PostgresImporter
-02-08-2024 15:12:04 - INFO - Migration completed successfully.

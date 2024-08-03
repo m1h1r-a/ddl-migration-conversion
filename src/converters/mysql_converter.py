@@ -3,7 +3,7 @@ from typing import List, Dict
 import logging
 
 #from mysql to postgres converter
-class DDLConverter:
+class MySQLtoPostgres:
     
     @staticmethod
     def mysql_to_postgres(mysql_ddl: str):

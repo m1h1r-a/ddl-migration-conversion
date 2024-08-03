@@ -1,6 +1,8 @@
 import mysql.connector
 import logging
 
+
+#import into mysql using supplied ddl statements
 class MySQLImporter():
     
     def __init__(self, config):
