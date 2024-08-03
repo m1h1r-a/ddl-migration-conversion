@@ -3,10 +3,12 @@ from typing import List, Dict
 from configparser import ConfigParser
 import argparse
 
+#Mysql to Postgres
 from extractors.mysql_extractor import MySQLExtractor
 from converters.mysql_converter import MySQLtoPostgres
 from importers.postgres_importer import PostgresImporter
 
+#Postgres to Mysql
 from extractors.postgres_extractor import PostgresExtractor
 from converters.postgres_converter import PostgresToMySQL
 from importers.mysql_importer import MySQLImporter
@@ -68,15 +70,21 @@ class PostgresToMySQLMigrator:
 
 if __name__ == "__main__":
     
-    parser = argparse.ArgumentParser(description='Enter Source & Destination')
-    parser.add_argument('source', type=str, help='Enter Source')
-    parser.add_argument('destination', type=str, help='Enter Destination')
+    
+    #parser to select source and destination
+    parser = argparse.ArgumentParser(description='Enter Source with -s or --source & Destination with -d or --destination for DDL migration-conversion')
+    parser.add_argument('-s', '--source', type=str, nargs='+', help="List of source elements")
+    parser.add_argument('-d', '--destination', type=str, nargs='+', help="List of destination elements")
     args = parser.parse_args()
     
-    source = args.source
-    destination = args.destination
+    source_list = args.source if args.source else []
+    destination_list = args.destination if args.destination else []
     
+    #will change later with inclusion of more clients
+    source = source_list[0]
+    destination = destination_list[0]
     
+    # parser to take input from configuration file
     config = ConfigParser()
     try:
         config.read("config/db.ini")

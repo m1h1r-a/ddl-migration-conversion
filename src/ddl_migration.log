@@ -1,8 +1,16 @@
-03-08-2024 22:34:14 - DEBUG - No. of DDL Statements Left to Be Executed: 3
-03-08-2024 22:34:14 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'customer'
-03-08-2024 22:34:14 - INFO -  RETRYING...
-03-08-2024 22:34:14 - DEBUG - No. of DDL Statements Left to Be Executed: 3
-03-08-2024 22:34:14 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS employees (
+03-08-2024 23:14:42 - INFO - No. of DDL Statements Left to Be Executed: 3
+03-08-2024 23:14:42 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS orders (
+    OrderID INT NOT NULL AUTO_INCREMENT,
+    OrderDate date NOT NULL,
+    TotalAmount DECIMAL(10,2) NOT NULL,
+    CustomerID INT,
+    EmployeeID INT,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
+    FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
+) ENGINE=InnoDB;
+03-08-2024 23:14:42 - INFO - No. of DDL Statements Left to Be Executed: 2
+03-08-2024 23:14:42 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS employees (
     EmployeeID INT NOT NULL AUTO_INCREMENT,
     FirstName VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
@@ -53,8 +61,8 @@
     Notes TEXT,
     PRIMARY KEY (EmployeeID)
 ) ENGINE=InnoDB;
-03-08-2024 22:34:14 - DEBUG - No. of DDL Statements Left to Be Executed: 2
-03-08-2024 22:34:14 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS customer (
+03-08-2024 23:14:42 - INFO - No. of DDL Statements Left to Be Executed: 1
+03-08-2024 23:14:42 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS customer (
     CustomerID INT NOT NULL AUTO_INCREMENT,
     CustomerName VARCHAR(100) NOT NULL,
     ContactNumber VARCHAR(20) DEFAULT NULL,
@@ -64,16 +72,5 @@
     PRIMARY KEY (CustomerID),
     FOREIGN KEY (SalesRepID) REFERENCES employees(EmployeeID)
 ) ENGINE=InnoDB;
-03-08-2024 22:34:14 - DEBUG - No. of DDL Statements Left to Be Executed: 1
-03-08-2024 22:34:14 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS orders (
-    OrderID INT NOT NULL AUTO_INCREMENT,
-    OrderDate date NOT NULL,
-    TotalAmount DECIMAL(10,2) NOT NULL,
-    CustomerID INT,
-    EmployeeID INT,
-    PRIMARY KEY (OrderID),
-    FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
-    FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
-) ENGINE=InnoDB;
-03-08-2024 22:34:14 - INFO - Import to MySQL Succesfull!
-03-08-2024 22:34:14 - INFO - Migration completed successfully.
+03-08-2024 23:14:42 - INFO - Import to MySQL Succesfull!
+03-08-2024 23:14:42 - INFO - Migration completed successfully.
