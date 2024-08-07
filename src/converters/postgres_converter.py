@@ -1,6 +1,7 @@
 import re
 import logging
 
+#convert ddl to mysql ddl
 #postgres ddl to mysql ddl
 class PostgresToMySQL():
     
@@ -9,6 +10,7 @@ class PostgresToMySQL():
         mysql_ddl = postgres_ddl
         
         mapper = {
+            r'create or replace' : 'CREATE',
             r'CREATE TABLE' : 'CREATE TABLE IF NOT EXISTS',
             r'\bserial\b': 'INT AUTO_INCREMENT',
             r'DEFAULT nextval\(\'"\w+"\'::regclass\)': 'AUTO_INCREMENT',

@@ -1,14 +1,36 @@
 import psycopg2
 import logging
 from typing import List, Dict
+from sqlalchemy import create_engine
+from sqlalchemy_utils import database_exists, create_database
+from urllib.parse import quote_plus
+
 
 # Import into postgres using supplied ddl statements
 class PostgresImporter:
     def __init__(self, config: Dict[str, str]):
         self.config = config
+        self.engine = self._create_engine()    
+        
+    #experimental to check if database exists
+    def _create_engine(self):
+        password = quote_plus(self.config['password'])
+        url = f"postgresql://{self.config['user']}:{password}@{self.config['host']}:{self.config['port']}/{self.config['database']}"
+        return create_engine(url)
+    
+    #creates database if not exists  
+    def create_database_if_not_exists(self):
+        if not database_exists(self.engine.url):
+            create_database(self.engine.url)
+            logging.info(f"Database '{self.config['database']}' created successfully.")
+        else:
+            logging.info(f"Database '{self.config['database']}' already exists.")
         
 
     def import_ddl(self, ddl_statements: List[str]):
+                   
+        self.create_database_if_not_exists()
+            
         try:
             conn = psycopg2.connect(**self.config)
             cur = conn.cursor()

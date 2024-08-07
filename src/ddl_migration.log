@@ -1,76 +1,83 @@
-03-08-2024 23:14:42 - INFO - No. of DDL Statements Left to Be Executed: 3
-03-08-2024 23:14:42 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS orders (
-    OrderID INT NOT NULL AUTO_INCREMENT,
-    OrderDate date NOT NULL,
-    TotalAmount DECIMAL(10,2) NOT NULL,
-    CustomerID INT,
-    EmployeeID INT,
-    PRIMARY KEY (OrderID),
-    FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
-    FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
-) ENGINE=InnoDB;
-03-08-2024 23:14:42 - INFO - No. of DDL Statements Left to Be Executed: 2
-03-08-2024 23:14:42 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS employees (
-    EmployeeID INT NOT NULL AUTO_INCREMENT,
-    FirstName VARCHAR(100) NOT NULL,
-    LastName VARCHAR(100) NOT NULL,
-    MiddleName VARCHAR(100) DEFAULT NULL,
-    DateOfBirth date,
-    Gender CHAR(1) DEFAULT NULL,
-    HireDate date,
-    JobTitle VARCHAR(100) DEFAULT NULL,
-    Department VARCHAR(100) DEFAULT NULL,
-    ManagerID INT,
-    Salary DECIMAL(10,2) DEFAULT NULL,
-    Bonus DECIMAL(10,2) DEFAULT NULL,
-    CommissionPct DECIMAL(10,2) DEFAULT NULL,
-    Email VARCHAR(255) DEFAULT NULL,
-    PhoneNumber VARCHAR(20) DEFAULT NULL,
-    StreetAddress VARCHAR(255) DEFAULT NULL,
-    City VARCHAR(100) DEFAULT NULL,
-    State VARCHAR(100) DEFAULT NULL,
-    ZipCode VARCHAR(20) DEFAULT NULL,
-    Country VARCHAR(100) DEFAULT NULL,
-    EmergencyContactName VARCHAR(100) DEFAULT NULL,
-    EmergencyContactPhone VARCHAR(20) DEFAULT NULL,
-    EmergencyContactRelation VARCHAR(50) DEFAULT NULL,
-    EmploymentStatus VARCHAR(50) DEFAULT NULL,
-    WorkLocation VARCHAR(100) DEFAULT NULL,
-    WorkPhone VARCHAR(20) DEFAULT NULL,
-    Extension VARCHAR(10) DEFAULT NULL,
-    WorkEmail VARCHAR(255) DEFAULT NULL,
-    IsFullTime boolean,
-    IsPartTime boolean,
-    IsContractor boolean,
-    ContractStartDate date,
-    ContractEndDate date,
-    HoursPerWeek DECIMAL(10,2) DEFAULT NULL,
-    VacationDays INT,
-    SickDays INT,
-    IsEligibleForBenefits boolean,
-    HealthInsuranceProvider VARCHAR(100) DEFAULT NULL,
-    RetirementPlanProvider VARCHAR(100) DEFAULT NULL,
-    LastPromotionDate date,
-    LastPerformanceReviewDate date,
-    PerformanceScore DECIMAL(10,2) DEFAULT NULL,
-    YearsAtCompany DECIMAL(10,2) DEFAULT NULL,
-    LanguagesSpoken VARCHAR(255) DEFAULT NULL,
-    Skills VARCHAR(255) DEFAULT NULL,
-    EducationLevel VARCHAR(50) DEFAULT NULL,
-    Certifications VARCHAR(255) DEFAULT NULL,
-    Notes TEXT,
-    PRIMARY KEY (EmployeeID)
-) ENGINE=InnoDB;
-03-08-2024 23:14:42 - INFO - No. of DDL Statements Left to Be Executed: 1
-03-08-2024 23:14:42 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS customer (
-    CustomerID INT NOT NULL AUTO_INCREMENT,
-    CustomerName VARCHAR(100) NOT NULL,
-    ContactNumber VARCHAR(20) DEFAULT NULL,
-    Email VARCHAR(255) DEFAULT NULL,
-    SalesRepID INT,
-    Address VARCHAR(255) DEFAULT NULL,
-    PRIMARY KEY (CustomerID),
-    FOREIGN KEY (SalesRepID) REFERENCES employees(EmployeeID)
-) ENGINE=InnoDB;
-03-08-2024 23:14:42 - INFO - Import to MySQL Succesfull!
-03-08-2024 23:14:42 - INFO - Migration completed successfully.
+07-08-2024 12:35:53 - INFO - Successfully extracted 3 DDL statements from MySQL
+07-08-2024 12:35:53 - INFO - Database 'mysqlTestDB' created successfully.
+07-08-2024 12:35:53 - DEBUG - No. of DDL Statements Left to Be Executed: 3
+07-08-2024 12:35:53 - WARNING - Execution Failed: relation "employees" does not exist
+
+07-08-2024 12:35:53 - INFO -  RETRYING...
+07-08-2024 12:35:53 - DEBUG - No. of DDL Statements Left to Be Executed: 3
+07-08-2024 12:35:53 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS "employees" (
+  "EmployeeID" SERIAL,
+  "FirstName" varchar(100) NOT NULL,
+  "LastName" varchar(100) NOT NULL,
+  "MiddleName" varchar(100) DEFAULT NULL,
+  "DateOfBirth" date DEFAULT NULL,
+  "Gender" char(1) DEFAULT NULL,
+  "HireDate" date DEFAULT NULL,
+  "JobTitle" varchar(100) DEFAULT NULL,
+  "Department" varchar(100) DEFAULT NULL,
+  "ManagerID" INTEGER DEFAULT NULL,
+  "Salary" decimal(10,2) DEFAULT NULL,
+  "Bonus" decimal(8,2) DEFAULT NULL,
+  "CommissionPct" decimal(5,2) DEFAULT NULL,
+  "Email" varchar(255) DEFAULT NULL,
+  "PhoneNumber" varchar(20) DEFAULT NULL,
+  "StreetAddress" varchar(255) DEFAULT NULL,
+  "City" varchar(100) DEFAULT NULL,
+  "State" varchar(100) DEFAULT NULL,
+  "ZipCode" varchar(20) DEFAULT NULL,
+  "Country" varchar(100) DEFAULT NULL,
+  "EmergencyContactName" varchar(100) DEFAULT NULL,
+  "EmergencyContactPhone" varchar(20) DEFAULT NULL,
+  "EmergencyContactRelation" varchar(50) DEFAULT NULL,
+  "EmploymentStatus" varchar(50) DEFAULT NULL,
+  "WorkLocation" varchar(100) DEFAULT NULL,
+  "WorkPhone" varchar(20) DEFAULT NULL,
+  "Extension" varchar(10) DEFAULT NULL,
+  "WorkEmail" varchar(255) DEFAULT NULL,
+  "IsFullTime" BOOLEAN DEFAULT NULL,
+  "IsPartTime" BOOLEAN DEFAULT NULL,
+  "IsContractor" BOOLEAN DEFAULT NULL,
+  "ContractStartDate" date DEFAULT NULL,
+  "ContractEndDate" date DEFAULT NULL,
+  "HoursPerWeek" decimal(5,2) DEFAULT NULL,
+  "VacationDays" INTEGER DEFAULT NULL,
+  "SickDays" INTEGER DEFAULT NULL,
+  "IsEligibleForBenefits" BOOLEAN DEFAULT NULL,
+  "HealthInsuranceProvider" varchar(100) DEFAULT NULL,
+  "RetirementPlanProvider" varchar(100) DEFAULT NULL,
+  "LastPromotionDate" date DEFAULT NULL,
+  "LastPerformanceReviewDate" date DEFAULT NULL,
+  "PerformanceScore" decimal(5,2) DEFAULT NULL,
+  "YearsAtCompany" decimal(5,2) DEFAULT NULL,
+  "LanguagesSpoken" varchar(255) DEFAULT NULL,
+  "Skills" varchar(255) DEFAULT NULL,
+  "EducationLevel" varchar(50) DEFAULT NULL,
+  "Certifications" varchar(255) DEFAULT NULL,
+  "Notes" text,
+  PRIMARY KEY ("EmployeeID")
+)   
+07-08-2024 12:35:53 - DEBUG - No. of DDL Statements Left to Be Executed: 2
+07-08-2024 12:35:53 - WARNING - Execution Failed: relation "customer" does not exist
+
+07-08-2024 12:35:53 - INFO -  RETRYING...
+07-08-2024 12:35:53 - DEBUG - No. of DDL Statements Left to Be Executed: 2
+07-08-2024 12:35:53 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS "customer" (
+  "CustomerID" SERIAL,
+  "CustomerName" varchar(100) NOT NULL,
+  "ContactNumber" varchar(20) DEFAULT NULL,
+  "Email" varchar(255) DEFAULT NULL,
+  "SalesRepID" INTEGER DEFAULT NULL,
+  "Address" varchar(255) DEFAULT NULL,
+  PRIMARY KEY ("CustomerID"),FOREIGN KEY ("SalesRepID") REFERENCES "employees" ("EmployeeID")
+)   
+07-08-2024 12:35:53 - DEBUG - No. of DDL Statements Left to Be Executed: 1
+07-08-2024 12:35:53 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS "orders" (
+  "OrderID" SERIAL,
+  "OrderDate" date NOT NULL,
+  "TotalAmount" decimal(10,2) NOT NULL,
+  "CustomerID" INTEGER DEFAULT NULL,
+  "EmployeeID" INTEGER DEFAULT NULL,
+  PRIMARY KEY ("OrderID"),FOREIGN KEY ("CustomerID") REFERENCES "customer" ("CustomerID") ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY ("EmployeeID") REFERENCES "employees" ("EmployeeID")
+)   
+07-08-2024 12:35:53 - INFO - Import Succesfull to PostgresImporter
+07-08-2024 12:35:53 - INFO - Migration completed successfully.

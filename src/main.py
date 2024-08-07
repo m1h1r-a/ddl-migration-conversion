@@ -13,6 +13,9 @@ from extractors.postgres_extractor import PostgresExtractor
 from converters.postgres_converter import PostgresToMySQL
 from importers.mysql_importer import MySQLImporter
 
+#snowflake
+from extractors.snowflake_extractor import SnowflakeExtractor
+
 
 
 # logging time error and messages
@@ -66,7 +69,31 @@ class PostgresToMySQLMigrator:
         except Exception as e:
             logging.error(f"DDL migration failed in main.py migrate function: {e}")
             raise
+        
 
+class SnowflakeToPostgresMigrator:
+    def __init__(self, source_config: Dict[str, str], destination_config: Dict[str, str]):
+        self.exporter = SnowflakeExtractor(source_config)
+        self.converter = MySQLtoPostgres()
+        self.importer = PostgresImporter(destination_config)
+
+    def migrate(self):
+        try:
+            # extractorr
+            mysql_ddl = self.exporter.extract_ddl()
+            
+            # converters
+            postgres_ddl = [self.converter.mysql_to_postgres(ddl) for ddl in mysql_ddl]
+            
+            # importers
+            self.importer.import_ddl(postgres_ddl)
+            
+            
+        except Exception as e:
+            logging.error(f"DDL migration failed in main.py migrate function: {e}")
+            raise
+        
+        
 
 if __name__ == "__main__":
     
@@ -94,21 +121,32 @@ if __name__ == "__main__":
         raise
     
     try:
+            #default configs to cloud based, if that dosent work got to except and switch to inhouse clients
         source_config = {
             "host":config[source]["host"],
             "user":config[source]["user"],
             "password":config[source]["password"],
-            "database":config[source]["database"]
+            "database":config[source]["database"],
+            "port":config[source]["port"],
+            "account":config[source]["account"],
+            "warehouse":config[source]["warehouse"],
+            "schema":config[source]["schema"]
         }
         
         destination_config = {
             "host":config[destination]["host"],
             "user":config[destination]["user"],
             "password":config[destination]["password"],
-            "database":config[destination]["database"]
+            "database":config[destination]["database"],
+            "port":config[destination]["port"],
+            # "account":config[destination]["account"],
+            # "warehouse":config[destination]["warehouse"],
+            # "schema":config[destination]["schema"]
         }
-        
+    
     except Exception as e:
+        #put in house clients here with try block
+        
         print(f"Invalid Configuration Selected: {e}")
         logging.error("Invalid Configuration/Configuration not Present in db.ini")
         raise
@@ -116,7 +154,8 @@ if __name__ == "__main__":
     
     try:
         # migrator = MySQLToPostgresMigrator(source_config, destination_config) 
-        migrator = PostgresToMySQLMigrator(source_config, destination_config)
+        # migrator = PostgresToMySQLMigrator(source_config, destination_config)
+        migrator = SnowflakeToPostgresMigrator(source_config,destination_config)
         
         migrator.migrate()
         logging.info("Migration completed successfully.")
