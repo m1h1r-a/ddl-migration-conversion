@@ -1,13 +1,12 @@
 import re
 import logging
 
-#convert ddl to mysql ddl
-#postgres ddl to mysql ddl
-class PostgresToMySQL():
+#Convert DDL to mysql ddl
+class ToMySQLConverter:
     
     @staticmethod
-    def convert_to_mysql(postgres_ddl):
-        mysql_ddl = postgres_ddl
+    def to_mysql(ddl):
+        mysql_ddl = ddl
         
         mapper = {
             r'create or replace' : 'CREATE',
@@ -30,8 +29,8 @@ class PostgresToMySQL():
             r'ON UPDATE CASCADE ON DELETE CASCADE' : '',
         }
         
-        for postgres_map,mysql_map in mapper.items():
-            mysql_ddl = re.sub(postgres_map, mysql_map, mysql_ddl, flags= re.IGNORECASE)
+        for prev_ddl,mysql_map in mapper.items():
+            mysql_ddl = re.sub(prev_ddl, mysql_map, mysql_ddl, flags= re.IGNORECASE)
             
         
         #other fixes:

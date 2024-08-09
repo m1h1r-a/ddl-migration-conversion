@@ -3,12 +3,14 @@ from typing import List, Dict
 import logging
 
 #from mysql to postgres converter
-class MySQLtoPostgres:
+class ToPostgresConverter:
     
     @staticmethod
-    def mysql_to_postgres(mysql_ddl: str):
+    def to_postgres(mysql_ddl: str):
         postgres_ddl = mysql_ddl
         
+        
+        logging.debug(f"Before Converting: {postgres_ddl}")
 
         #convert ddl into postgres syntax
         #main conversion mapper from mysql to opstgres
@@ -31,7 +33,7 @@ class MySQLtoPostgres:
         postgres_ddl = re.sub(r'(\w+\.\w+\.(\w+)(\([^)]+\)))',r'\2\3', postgres_ddl, flags=re.IGNORECASE)
         postgres_ddl = re.sub(r'VARCHAR\(16777216\)','VARCHAR(255)',postgres_ddl,flags=re.IGNORECASE)
         postgres_ddl = re.sub(r'NUMBER\((\d+),(\d+)\)',r'NUMERIC(\1,\2)',postgres_ddl,flags=re.IGNORECASE)
-        # postgres_ddl = re.sub(r'NUMBER\(38,0\)', 'INTEGER', postgres_ddl,flags=re.IGNORECASE)
+        postgres_ddl = re.sub(r'NUMERIC\(38,0\)', 'INTEGER', postgres_ddl,flags=re.IGNORECASE)
         postgres_ddl = re.sub(r'TINYINT\s*\(\s*1\s*\)', 'BOOLEAN', postgres_ddl, flags=re.IGNORECASE)
         postgres_ddl = re.sub(r'CREATE TABLE','CREATE TABLE IF NOT EXISTS' ,postgres_ddl, flags=re.IGNORECASE)
         postgres_ddl = re.sub(r'AUTO_INCREMENT', 'SERIAL', postgres_ddl, flags=re.IGNORECASE)

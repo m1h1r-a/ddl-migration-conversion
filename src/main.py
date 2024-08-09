@@ -5,29 +5,30 @@ import argparse
 
 #Mysql to Postgres
 from extractors.mysql_extractor import MySQLExtractor
-from converters.mysql_converter import MySQLtoPostgres
+from converters.to_postgres import ToPostgresConverter
 from importers.postgres_importer import PostgresImporter
 
 #Postgres to Mysql
 from extractors.postgres_extractor import PostgresExtractor
-from converters.postgres_converter import PostgresToMySQL
+from converters.to_mysql import ToMySQLConverter
 from importers.mysql_importer import MySQLImporter
 
 #snowflake
 from extractors.snowflake_extractor import SnowflakeExtractor
-
+from converters.to_snowflake import ToSnowflakeConverter
+from importers.snowflake_importer import SnowflakeImporter  
 
 
 # logging time error and messages
 #debug->info->warning->error->critical
 logging.basicConfig(filename='ddl_migration.log', filemode='w', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s', datefmt="%d-%m-%Y %H:%M:%S")
-
+logging.getLogger('snowflake.connector').setLevel(logging.WARNING)
 
 
 class MySQLToPostgresMigrator:
     def __init__(self, source_config: Dict[str, str], destination_config: Dict[str, str]):
         self.exporter = MySQLExtractor(source_config)
-        self.converter = MySQLtoPostgres()
+        self.converter = ToPostgresConverter()
         self.importer = PostgresImporter(destination_config)
 
     def migrate(self):
@@ -36,7 +37,7 @@ class MySQLToPostgresMigrator:
             mysql_ddl = self.exporter.extract_ddl()
             
             # converters
-            postgres_ddl = [self.converter.mysql_to_postgres(ddl) for ddl in mysql_ddl]
+            postgres_ddl = [self.converter.to_postgres(ddl) for ddl in mysql_ddl]
             
             # importers
             self.importer.import_ddl(postgres_ddl)
@@ -49,7 +50,7 @@ class MySQLToPostgresMigrator:
 class PostgresToMySQLMigrator:
     def __init__(self, source_config: Dict[str, str], destination_config: Dict[str, str]):
         self.exporter = PostgresExtractor(source_config)
-        self.converter = PostgresToMySQL()
+        self.converter = ToMySQLConverter()
         self.importer = MySQLImporter(destination_config)
         
         
@@ -61,7 +62,7 @@ class PostgresToMySQLMigrator:
             postgres_ddl = self.exporter.extract_ddl()
             
             #converter
-            mysql_ddl = [self.converter.convert_to_mysql(ddl) for ddl in postgres_ddl]
+            mysql_ddl = [self.converter.to_mysql(ddl) for ddl in postgres_ddl]
 
             #importer
             self.importer.import_ddl(mysql_ddl)
@@ -74,7 +75,7 @@ class PostgresToMySQLMigrator:
 class SnowflakeToPostgresMigrator:
     def __init__(self, source_config: Dict[str, str], destination_config: Dict[str, str]):
         self.exporter = SnowflakeExtractor(source_config)
-        self.converter = MySQLtoPostgres()
+        self.converter = ToPostgresConverter()
         self.importer = PostgresImporter(destination_config)
 
     def migrate(self):
@@ -83,7 +84,7 @@ class SnowflakeToPostgresMigrator:
             mysql_ddl = self.exporter.extract_ddl()
             
             # converters
-            postgres_ddl = [self.converter.mysql_to_postgres(ddl) for ddl in mysql_ddl]
+            postgres_ddl = [self.converter.to_postgres(ddl) for ddl in mysql_ddl]
             
             # importers
             self.importer.import_ddl(postgres_ddl)
@@ -92,6 +93,23 @@ class SnowflakeToPostgresMigrator:
         except Exception as e:
             logging.error(f"DDL migration failed in main.py migrate function: {e}")
             raise
+        
+class MySQLToSnowflakeMigrator:
+    def __init__(self, source_config, destination_config):
+        self.exporter = MySQLExtractor(source_config)
+        self.converter = ToSnowflakeConverter()
+        self.importer = SnowflakeImporter(destination_config)
+        
+    def migrate(self):
+        try:
+            mysql_ddl = self.exporter.extract_ddl()
+            snowflake_ddl = [self.converter.to_snowflake(ddl) for ddl in mysql_ddl]
+            self.importer.import_ddl(snowflake_ddl)
+        except Exception as e:
+            logging.error(f"DDL migration failed in MySQLToSnowflakeMigrator: {e}")
+            raise
+        
+
         
         
 
@@ -121,16 +139,16 @@ if __name__ == "__main__":
         raise
     
     try:
-            #default configs to cloud based, if that dosent work got to except and switch to inhouse clients
+        #default configs to cloud based, if that dosent work got to except and switch to inhouse clients
         source_config = {
             "host":config[source]["host"],
             "user":config[source]["user"],
             "password":config[source]["password"],
             "database":config[source]["database"],
             "port":config[source]["port"],
-            "account":config[source]["account"],
-            "warehouse":config[source]["warehouse"],
-            "schema":config[source]["schema"]
+            # "account":config[source]["account"],
+            # "warehouse":config[source]["warehouse"],
+            # "schema":config[source]["schema"]
         }
         
         destination_config = {
@@ -139,14 +157,14 @@ if __name__ == "__main__":
             "password":config[destination]["password"],
             "database":config[destination]["database"],
             "port":config[destination]["port"],
-            # "account":config[destination]["account"],
-            # "warehouse":config[destination]["warehouse"],
-            # "schema":config[destination]["schema"]
+            "account":config[destination]["account"],
+            "warehouse":config[destination]["warehouse"],
+            "schema":config[destination]["schema"]
         }
     
     except Exception as e:
         #put in house clients here with try block
-        
+                
         print(f"Invalid Configuration Selected: {e}")
         logging.error("Invalid Configuration/Configuration not Present in db.ini")
         raise
@@ -155,7 +173,9 @@ if __name__ == "__main__":
     try:
         # migrator = MySQLToPostgresMigrator(source_config, destination_config) 
         # migrator = PostgresToMySQLMigrator(source_config, destination_config)
-        migrator = SnowflakeToPostgresMigrator(source_config,destination_config)
+        # migrator = SnowflakeToPostgresMigrator(source_config,destination_config)
+        migrator = MySQLToSnowflakeMigrator(source_config, destination_config)
+        
         
         migrator.migrate()
         logging.info("Migration completed successfully.")
