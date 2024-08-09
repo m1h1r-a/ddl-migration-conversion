@@ -27,6 +27,10 @@ class ToMySQLConverter:
             r'PRIMARY\s+KEY\s+\("([^"]+)"\)' : r'PRIMARY KEY (\1)',
             r'FOREIGN\s+KEY\s+\("([^"]+)"\)\s+REFERENCES\s+([^"]+)\("([^"]+)"\)' : r'FOREIGN KEY (\1) REFERENCES \2(\3)',
             r'ON UPDATE CASCADE ON DELETE CASCADE' : '',
+            r'NUMBER\(38\,0\)':'INT',
+            r'autoincrement start 1 increment 1 noorder':'AUTO_INCREMENT',
+            r'NUMBER\((\d+),(\d+)\)' : r'DECIMAL(\1,\2)',
+            r'VARCHAR\(16777216\)':'TEXT',
         }
         
         for prev_ddl,mysql_map in mapper.items():
@@ -38,6 +42,8 @@ class ToMySQLConverter:
         mysql_ddl = re.sub(r'\);$', ') ENGINE=InnoDB;', mysql_ddl, flags=re.IGNORECASE)
         mysql_ddl = re.sub(r'WITH\s*\([^)]*\)', '', mysql_ddl, flags=re.IGNORECASE)
         mysql_ddl = re.sub(r'public.', '',mysql_ddl, flags=re.IGNORECASE)
+        mysql_ddl = re.sub(r'(\w+\.(\w+)(\([^)]+\)))',r'\2\3', mysql_ddl, flags=re.IGNORECASE)
+
         
         
         # logging.debug(f"After Converting: {mysql_ddl}")

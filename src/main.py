@@ -109,8 +109,36 @@ class MySQLToSnowflakeMigrator:
             logging.error(f"DDL migration failed in MySQLToSnowflakeMigrator: {e}")
             raise
         
-
         
+class PostgresToSnowflake:
+    def __init__(self, source_config, destination_config):
+        self.exporter = PostgresExtractor(source_config)
+        self.converter = ToSnowflakeConverter()
+        self.importer = SnowflakeImporter(destination_config)
+        
+    def migrate(self):
+        try:
+            postgres_ddl = self.exporter.extract_ddl()
+            snowflake_ddl = [self.converter.to_snowflake(ddl) for ddl in postgres_ddl]
+            self.importer.import_ddl(snowflake_ddl)
+        except Exception as e:
+            logging.error(f"DDL migration failed in PostgresToSnowflake: {e}")
+            raise
+
+class SnowflakeToMySQL:
+    def __init__(self, source_config, destination_config):
+        self.exporter = SnowflakeExtractor(source_config) 
+        self.converter = ToMySQLConverter()
+        self.importer = MySQLImporter(destination_config)
+        
+    def migrate(self):
+        try:
+            snowflake_ddl = self.exporter.extract_ddl()
+            mysql_ddl = [self.converter.to_mysql(ddl) for ddl in snowflake_ddl]
+            self.importer.import_ddl(mysql_ddl)
+        except Exception as e:
+            logging.error(f"DDL migration failed in SnowflakeToMySQL: {e}")
+            raise
         
 
 if __name__ == "__main__":
@@ -138,6 +166,7 @@ if __name__ == "__main__":
         logging.error("Unable To read Config File")
         raise
     
+    
     try:
         #default configs to cloud based, if that dosent work got to except and switch to inhouse clients
         source_config = {
@@ -146,9 +175,9 @@ if __name__ == "__main__":
             "password":config[source]["password"],
             "database":config[source]["database"],
             "port":config[source]["port"],
-            # "account":config[source]["account"],
-            # "warehouse":config[source]["warehouse"],
-            # "schema":config[source]["schema"]
+            "account":config[source]["account"],
+            "warehouse":config[source]["warehouse"],
+            "schema":config[source]["schema"]
         }
         
         destination_config = {
@@ -157,9 +186,9 @@ if __name__ == "__main__":
             "password":config[destination]["password"],
             "database":config[destination]["database"],
             "port":config[destination]["port"],
-            "account":config[destination]["account"],
-            "warehouse":config[destination]["warehouse"],
-            "schema":config[destination]["schema"]
+            # "account":config[destination]["account"],
+            # "warehouse":config[destination]["warehouse"],
+            # "schema":config[destination]["schema"]
         }
     
     except Exception as e:
@@ -174,7 +203,9 @@ if __name__ == "__main__":
         # migrator = MySQLToPostgresMigrator(source_config, destination_config) 
         # migrator = PostgresToMySQLMigrator(source_config, destination_config)
         # migrator = SnowflakeToPostgresMigrator(source_config,destination_config)
-        migrator = MySQLToSnowflakeMigrator(source_config, destination_config)
+        # migrator = MySQLToSnowflakeMigrator(source_config, destination_config)
+        # migrator = PostgresToSnowflake(source_config, destination_config)
+        migrator = SnowflakeToMySQL(source_config, destination_config)
         
         
         migrator.migrate()

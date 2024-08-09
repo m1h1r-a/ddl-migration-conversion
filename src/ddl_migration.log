@@ -1,158 +1,83 @@
-09-08-2024 20:35:46 - INFO - Successfully extracted 3 DDL statements from MySQL
-09-08-2024 20:35:46 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS customer (
-  CustomerID int NOT NULL IDENTITY(1,1),
-  CustomerName varCHAR(100) NOT NULL,
-  ContactNumber varCHAR(20) DEFAULT NULL,
-  Email varCHAR(255) DEFAULT NULL,
-  SalesRepID int DEFAULT NULL,
-  Address varCHAR(255) DEFAULT NULL,
-  PRIMARY KEY (CustomerID),
-    FOREIGN KEY (SalesRepID) REFERENCES employees (EmployeeID)
-)  
-09-08-2024 20:35:46 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS employees (
-  EmployeeID int NOT NULL IDENTITY(1,1),
-  FirstName varCHAR(100) NOT NULL,
-  LastName varCHAR(100) NOT NULL,
-  MiddleName varCHAR(100) DEFAULT NULL,
-  DateOfBirth date DEFAULT NULL,
-  Gender CHAR(1) DEFAULT NULL,
-  HireDate date DEFAULT NULL,
-  JobTitle varCHAR(100) DEFAULT NULL,
-  Department varCHAR(100) DEFAULT NULL,
-  ManagerID int DEFAULT NULL,
-  Salary DECIMAL(10,2) DEFAULT NULL,
-  Bonus DECIMAL(10,2) DEFAULT NULL,
-  CommissionPct DECIMAL(10,2) DEFAULT NULL,
-  Email varCHAR(255) DEFAULT NULL,
-  PhoneNumber varCHAR(20) DEFAULT NULL,
-  StreetAddress varCHAR(255) DEFAULT NULL,
-  City varCHAR(100) DEFAULT NULL,
-  State varCHAR(100) DEFAULT NULL,
-  ZipCode varCHAR(20) DEFAULT NULL,
-  Country varCHAR(100) DEFAULT NULL,
-  EmergencyContactName varCHAR(100) DEFAULT NULL,
-  EmergencyContactPhone varCHAR(20) DEFAULT NULL,
-  EmergencyContactRelation varCHAR(50) DEFAULT NULL,
-  EmploymentStatus varCHAR(50) DEFAULT NULL,
-  WorkLocation varCHAR(100) DEFAULT NULL,
-  WorkPhone varCHAR(20) DEFAULT NULL,
-  Extension varCHAR(10) DEFAULT NULL,
-  WorkEmail varCHAR(255) DEFAULT NULL,
-  IsFullTime BOOLEAN DEFAULT NULL,
-  IsPartTime BOOLEAN DEFAULT NULL,
-  IsContractor BOOLEAN DEFAULT NULL,
-  ContractStartDate date DEFAULT NULL,
-  ContractEndDate date DEFAULT NULL,
-  HoursPerWeek DECIMAL(10,2) DEFAULT NULL,
-  VacationDays int DEFAULT NULL,
-  SickDays int DEFAULT NULL,
-  IsEligibleForBenefits BOOLEAN DEFAULT NULL,
-  HealthInsuranceProvider varCHAR(100) DEFAULT NULL,
-  RetirementPlanProvider varCHAR(100) DEFAULT NULL,
-  LastPromotionDate date DEFAULT NULL,
-  LastPerformanceReviewDate date DEFAULT NULL,
-  PerformanceScore DECIMAL(10,2) DEFAULT NULL,
-  YearsAtCompany DECIMAL(10,2) DEFAULT NULL,
-  LanguagesSpoken varCHAR(255) DEFAULT NULL,
-  Skills varCHAR(255) DEFAULT NULL,
-  EducationLevel varCHAR(50) DEFAULT NULL,
-  Certifications varCHAR(255) DEFAULT NULL,
-  Notes TEXT,
-  PRIMARY KEY (EmployeeID)
-)  
-09-08-2024 20:35:46 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS orders (
-  OrderID int NOT NULL IDENTITY(1,1),
-  OrderDate date NOT NULL,
-  TotalAmount DECIMAL(10,2) NOT NULL,
-  CustomerID int DEFAULT NULL,
-  EmployeeID int DEFAULT NULL,
-  PRIMARY KEY (OrderID),
-      FOREIGN KEY (CustomerID) REFERENCES customer (CustomerID),
-  FOREIGN KEY (EmployeeID) REFERENCES employees (EmployeeID)
-)  
-09-08-2024 20:35:47 - INFO - Connected to Snowflake successfully.
-09-08-2024 20:35:47 - INFO - Database 'SOURCE' created or already exists and is now in use.
-09-08-2024 20:35:47 - DEBUG - No. of DDL Statements Left to Be Executed: 3
-09-08-2024 20:35:48 - WARNING - Execution Failed: 002003 (42S02): SQL compilation error:
-Table 'SOURCE.PUBLIC.EMPLOYEES' does not exist or not authorized.
-09-08-2024 20:35:48 - INFO - RETRYING....
-09-08-2024 20:35:48 - DEBUG - No. of DDL Statements Left to Be Executed: 3
-09-08-2024 20:35:48 - DEBUG - Executed DDL Succesfully: CREATE TABLE IF NOT EXISTS employees (
-  EmployeeID int NOT NULL IDENTITY(1,1),
-  FirstName varCHAR(100) NOT NULL,
-  LastName varCHAR(100) NOT NULL,
-  MiddleName varCHAR(100) DEFAULT NULL,
-  DateOfBirth date DEFAULT NULL,
-  Gender CHAR(1) DEFAULT NULL,
-  HireDate date DEFAULT NULL,
-  JobTitle varCHAR(100) DEFAULT NULL,
-  Department varCHAR(100) DEFAULT NULL,
-  ManagerID int DEFAULT NULL,
-  Salary DECIMAL(10,2) DEFAULT NULL,
-  Bonus DECIMAL(10,2) DEFAULT NULL,
-  CommissionPct DECIMAL(10,2) DEFAULT NULL,
-  Email varCHAR(255) DEFAULT NULL,
-  PhoneNumber varCHAR(20) DEFAULT NULL,
-  StreetAddress varCHAR(255) DEFAULT NULL,
-  City varCHAR(100) DEFAULT NULL,
-  State varCHAR(100) DEFAULT NULL,
-  ZipCode varCHAR(20) DEFAULT NULL,
-  Country varCHAR(100) DEFAULT NULL,
-  EmergencyContactName varCHAR(100) DEFAULT NULL,
-  EmergencyContactPhone varCHAR(20) DEFAULT NULL,
-  EmergencyContactRelation varCHAR(50) DEFAULT NULL,
-  EmploymentStatus varCHAR(50) DEFAULT NULL,
-  WorkLocation varCHAR(100) DEFAULT NULL,
-  WorkPhone varCHAR(20) DEFAULT NULL,
-  Extension varCHAR(10) DEFAULT NULL,
-  WorkEmail varCHAR(255) DEFAULT NULL,
-  IsFullTime BOOLEAN DEFAULT NULL,
-  IsPartTime BOOLEAN DEFAULT NULL,
-  IsContractor BOOLEAN DEFAULT NULL,
-  ContractStartDate date DEFAULT NULL,
-  ContractEndDate date DEFAULT NULL,
-  HoursPerWeek DECIMAL(10,2) DEFAULT NULL,
-  VacationDays int DEFAULT NULL,
-  SickDays int DEFAULT NULL,
-  IsEligibleForBenefits BOOLEAN DEFAULT NULL,
-  HealthInsuranceProvider varCHAR(100) DEFAULT NULL,
-  RetirementPlanProvider varCHAR(100) DEFAULT NULL,
-  LastPromotionDate date DEFAULT NULL,
-  LastPerformanceReviewDate date DEFAULT NULL,
-  PerformanceScore DECIMAL(10,2) DEFAULT NULL,
-  YearsAtCompany DECIMAL(10,2) DEFAULT NULL,
-  LanguagesSpoken varCHAR(255) DEFAULT NULL,
-  Skills varCHAR(255) DEFAULT NULL,
-  EducationLevel varCHAR(50) DEFAULT NULL,
-  Certifications varCHAR(255) DEFAULT NULL,
-  Notes TEXT,
-  PRIMARY KEY (EmployeeID)
-)  
-09-08-2024 20:35:48 - DEBUG - No. of DDL Statements Left to Be Executed: 2
-09-08-2024 20:35:48 - WARNING - Execution Failed: 002003 (42S02): SQL compilation error:
-Table 'SOURCE.PUBLIC.CUSTOMER' does not exist or not authorized.
-09-08-2024 20:35:48 - INFO - RETRYING....
-09-08-2024 20:35:48 - DEBUG - No. of DDL Statements Left to Be Executed: 2
-09-08-2024 20:35:48 - DEBUG - Executed DDL Succesfully: CREATE TABLE IF NOT EXISTS customer (
-  CustomerID int NOT NULL IDENTITY(1,1),
-  CustomerName varCHAR(100) NOT NULL,
-  ContactNumber varCHAR(20) DEFAULT NULL,
-  Email varCHAR(255) DEFAULT NULL,
-  SalesRepID int DEFAULT NULL,
-  Address varCHAR(255) DEFAULT NULL,
-  PRIMARY KEY (CustomerID),
-    FOREIGN KEY (SalesRepID) REFERENCES employees (EmployeeID)
-)  
-09-08-2024 20:35:48 - DEBUG - No. of DDL Statements Left to Be Executed: 1
-09-08-2024 20:35:48 - DEBUG - Executed DDL Succesfully: CREATE TABLE IF NOT EXISTS orders (
-  OrderID int NOT NULL IDENTITY(1,1),
-  OrderDate date NOT NULL,
-  TotalAmount DECIMAL(10,2) NOT NULL,
-  CustomerID int DEFAULT NULL,
-  EmployeeID int DEFAULT NULL,
-  PRIMARY KEY (OrderID),
-      FOREIGN KEY (CustomerID) REFERENCES customer (CustomerID),
-  FOREIGN KEY (EmployeeID) REFERENCES employees (EmployeeID)
-)  
-09-08-2024 20:35:48 - INFO - Import Succesfull to Snowflake!
-09-08-2024 20:35:48 - INFO - Migration completed successfully.
+09-08-2024 23:53:47 - INFO - Database 'testyy' created successfully.
+09-08-2024 23:53:47 - INFO - No. of DDL Statements Left to Be Executed: 3
+09-08-2024 23:53:47 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'employees'
+09-08-2024 23:53:47 - INFO -  RETRYING...
+09-08-2024 23:53:47 - INFO - No. of DDL Statements Left to Be Executed: 3
+09-08-2024 23:53:47 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS EMPLOYEES (
+	EMPLOYEEID INT NOT NULL AUTO_INCREMENT,
+	FIRSTNAME VARCHAR(100) NOT NULL,
+	LASTNAME VARCHAR(100) NOT NULL,
+	MIDDLENAME VARCHAR(100),
+	DATEOFBIRTH DATE,
+	GENDER VARCHAR(1),
+	HIREDATE DATE,
+	JOBTITLE VARCHAR(100),
+	DEPARTMENT VARCHAR(100),
+	MANAGERID INT,
+	SALARY DECIMAL(10,2),
+	BONUS DECIMAL(10,2),
+	COMMISSIONPCT DECIMAL(10,2),
+	EMAIL VARCHAR(255),
+	PHONENUMBER VARCHAR(20),
+	STREETADDRESS VARCHAR(255),
+	CITY VARCHAR(100),
+	STATE VARCHAR(100),
+	ZIPCODE VARCHAR(20),
+	COUNTRY VARCHAR(100),
+	EMERGENCYCONTACTNAME VARCHAR(100),
+	EMERGENCYCONTACTPHONE VARCHAR(20),
+	EMERGENCYCONTACTRELATION VARCHAR(50),
+	EMPLOYMENTSTATUS VARCHAR(50),
+	WORKLOCATION VARCHAR(100),
+	WORKPHONE VARCHAR(20),
+	EXTENSION VARCHAR(10),
+	WORKEMAIL VARCHAR(255),
+	ISFULLTIME BOOLEAN,
+	ISPARTTIME BOOLEAN,
+	ISCONTRACTOR BOOLEAN,
+	CONTRACTSTARTDATE DATE,
+	CONTRACTENDDATE DATE,
+	HOURSPERWEEK DECIMAL(10,2),
+	VACATIONDAYS INT,
+	SICKDAYS INT,
+	ISELIGIBLEFORBENEFITS BOOLEAN,
+	HEALTHINSURANCEPROVIDER VARCHAR(100),
+	RETIREMENTPLANPROVIDER VARCHAR(100),
+	LASTPROMOTIONDATE DATE,
+	LASTPERFORMANCEREVIEWDATE DATE,
+	PERFORMANCESCORE DECIMAL(10,2),
+	YEARSATCOMPANY DECIMAL(10,2),
+	LANGUAGESSPOKEN VARCHAR(255),
+	SKILLS VARCHAR(255),
+	EDUCATIONLEVEL VARCHAR(50),
+	CERTIFICATIONS VARCHAR(255),
+	NOTES TEXT,
+	primary key (EMPLOYEEID)
+) ENGINE=InnoDB;
+09-08-2024 23:53:47 - INFO - No. of DDL Statements Left to Be Executed: 2
+09-08-2024 23:53:47 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'customer'
+09-08-2024 23:53:47 - INFO -  RETRYING...
+09-08-2024 23:53:47 - INFO - No. of DDL Statements Left to Be Executed: 2
+09-08-2024 23:53:47 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS CUSTOMER (
+	CUSTOMERID INT NOT NULL AUTO_INCREMENT,
+	CUSTOMERNAME VARCHAR(100) NOT NULL,
+	CONTACTNUMBER VARCHAR(20),
+	EMAIL VARCHAR(255),
+	SALESREPID INT,
+	ADDRESS VARCHAR(255),
+	primary key (CUSTOMERID),
+	foreign key (SALESREPID) references EMPLOYEES(EMPLOYEEID)
+) ENGINE=InnoDB;
+09-08-2024 23:53:47 - INFO - No. of DDL Statements Left to Be Executed: 1
+09-08-2024 23:53:47 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS ORDERS (
+	ORDERID INT NOT NULL AUTO_INCREMENT,
+	ORDERDATE DATE NOT NULL,
+	TOTALAMOUNT DECIMAL(10,2) NOT NULL,
+	CUSTOMERID INT,
+	EMPLOYEEID INT,
+	primary key (ORDERID),
+	foreign key (CUSTOMERID) references CUSTOMER(CUSTOMERID),
+	foreign key (EMPLOYEEID) references EMPLOYEES(EMPLOYEEID)
+) ENGINE=InnoDB;
+09-08-2024 23:53:47 - INFO - Import to MySQL Succesfull!
+09-08-2024 23:53:47 - INFO - Migration completed successfully.

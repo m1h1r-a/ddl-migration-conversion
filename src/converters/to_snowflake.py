@@ -1,13 +1,11 @@
 import re
 import logging
 
-#Convert DDL to snowflake ddl
+# Convert DDL to Snowflake DDL
 class ToSnowflakeConverter:
     @staticmethod
     def to_snowflake(ddl):
         snowflake_ddl = ddl
-        
-        # logging.debug(f"Before Converting: {ddl}")
 
         # Mapper for PostgreSQL to Snowflake conversions
         mapper = {
@@ -38,9 +36,9 @@ class ToSnowflakeConverter:
             r'CHAR': 'CHAR',
             r'PRIMARY KEY \((\w+)\)': r'PRIMARY KEY (\1)',
             r'FOREIGN KEY \((\w+)\) REFERENCES (\w+)\((\w+)\)': r'FOREIGN KEY (\1) REFERENCES \2(\3)',
-            
         }
 
+        # Apply the mapper
         for prev_ddl, snow_map in mapper.items():
             snowflake_ddl = re.sub(prev_ddl, snow_map, snowflake_ddl, flags=re.IGNORECASE)
         
