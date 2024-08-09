@@ -175,9 +175,9 @@ if __name__ == "__main__":
             "password":config[source]["password"],
             "database":config[source]["database"],
             "port":config[source]["port"],
-            "account":config[source]["account"],
-            "warehouse":config[source]["warehouse"],
-            "schema":config[source]["schema"]
+            # "account":config[source]["account"],
+            # "warehouse":config[source]["warehouse"],
+            # "schema":config[source]["schema"]
         }
         
         destination_config = {
@@ -186,9 +186,9 @@ if __name__ == "__main__":
             "password":config[destination]["password"],
             "database":config[destination]["database"],
             "port":config[destination]["port"],
-            # "account":config[destination]["account"],
-            # "warehouse":config[destination]["warehouse"],
-            # "schema":config[destination]["schema"]
+            "account":config[destination]["account"],
+            "warehouse":config[destination]["warehouse"],
+            "schema":config[destination]["schema"]
         }
     
     except Exception as e:
@@ -204,8 +204,8 @@ if __name__ == "__main__":
         # migrator = PostgresToMySQLMigrator(source_config, destination_config)
         # migrator = SnowflakeToPostgresMigrator(source_config,destination_config)
         # migrator = MySQLToSnowflakeMigrator(source_config, destination_config)
-        # migrator = PostgresToSnowflake(source_config, destination_config)
-        migrator = SnowflakeToMySQL(source_config, destination_config)
+        migrator = PostgresToSnowflake(source_config, destination_config)
+        # migrator = SnowflakeToMySQL(source_config, destination_config)
         
         
         migrator.migrate()

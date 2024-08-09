@@ -7,6 +7,8 @@ class ToSnowflakeConverter:
     def to_snowflake(ddl):
         snowflake_ddl = ddl
 
+        logging.debug(f"Before Converting: {ddl}")
+
         # Mapper for PostgreSQL to Snowflake conversions
         mapper = {
             r'`': '',
@@ -43,6 +45,7 @@ class ToSnowflakeConverter:
             snowflake_ddl = re.sub(prev_ddl, snow_map, snowflake_ddl, flags=re.IGNORECASE)
         
         # Additional fixes
+        snowflake_ddl = re.sub(r'\bON UPDATE CASCADE ON DELETE CASCADE\B','',snowflake_ddl,flags=re.IGNORECASE)
         snowflake_ddl = re.sub(r'AUTO_INCREMENT','IDENTITY(1,1)',snowflake_ddl,flags=re.IGNORECASE)
         snowflake_ddl = re.sub(r'CONSTRAINT\s+(\w+)\s+PRIMARY KEY\s+\("(\w+)"\)', r'PRIMARY KEY (\2)', snowflake_ddl, flags=re.IGNORECASE)
         snowflake_ddl = re.sub(r'\);$', ');', snowflake_ddl, flags=re.IGNORECASE)
@@ -53,6 +56,8 @@ class ToSnowflakeConverter:
         snowflake_ddl = re.sub(r'COLLATE\s*=\s*\w+', '', snowflake_ddl, flags=re.IGNORECASE)
         snowflake_ddl = re.sub(r'tinyint\(1\)','BOOLEAN',snowflake_ddl)
         snowflake_ddl = re.sub(r'KEY\s+\w+\s+\(\w+\)\,\n','',snowflake_ddl,flags=re.IGNORECASE)
+        snowflake_ddl = re.sub(r'\s*ON DELETE CASCADE ON UPDATE CASCADE','',snowflake_ddl, flags=re.IGNORECASE)
+
 
         logging.debug(f"After Converting: {snowflake_ddl}")
         return snowflake_ddl

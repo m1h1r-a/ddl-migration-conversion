@@ -38,11 +38,12 @@ class ToMySQLConverter:
             
         
         #other fixes:
+        mysql_ddl = re.sub(r'(\w+\.\w+\.(\w+)(\([^)]+\)))',r'\2\3', mysql_ddl, flags=re.IGNORECASE)
         mysql_ddl = re.sub(r'CONSTRAINT\s+(\w+)\s+PRIMARY KEY\s+\("(\w+)"\)', r'PRIMARY KEY (\2)', mysql_ddl, flags=re.IGNORECASE)
         mysql_ddl = re.sub(r'\);$', ') ENGINE=InnoDB;', mysql_ddl, flags=re.IGNORECASE)
         mysql_ddl = re.sub(r'WITH\s*\([^)]*\)', '', mysql_ddl, flags=re.IGNORECASE)
         mysql_ddl = re.sub(r'public.', '',mysql_ddl, flags=re.IGNORECASE)
-        mysql_ddl = re.sub(r'(\w+\.(\w+)(\([^)]+\)))',r'\2\3', mysql_ddl, flags=re.IGNORECASE)
+        mysql_ddl = re.sub(r'(\w+\.\w+\.(\w+)(\([^)]+\)))',r'\2\3', mysql_ddl, flags=re.IGNORECASE)
 
         
         
