@@ -10,7 +10,7 @@ class ToPostgresConverter:
         postgres_ddl = mysql_ddl
         
         
-        logging.debug(f"Before Converting: {postgres_ddl}")
+        # logging.debug(f"Before Converting: {postgres_ddl}")
 
         #convert ddl into postgres syntax
         #main conversion mapper from mysql to opstgres

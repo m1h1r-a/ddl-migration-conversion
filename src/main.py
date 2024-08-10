@@ -3,15 +3,15 @@ from typing import List, Dict
 from configparser import ConfigParser
 import argparse
 
-#Mysql to Postgres
+#Mysql 
 from extractors.mysql_extractor import MySQLExtractor
-from converters.to_postgres import ToPostgresConverter
-from importers.postgres_importer import PostgresImporter
-
-#Postgres to Mysql
-from extractors.postgres_extractor import PostgresExtractor
 from converters.to_mysql import ToMySQLConverter
 from importers.mysql_importer import MySQLImporter
+
+#Postgres
+from extractors.postgres_extractor import PostgresExtractor
+from converters.to_postgres import ToPostgresConverter
+from importers.postgres_importer import PostgresImporter
 
 #snowflake
 from extractors.snowflake_extractor import SnowflakeExtractor
@@ -25,124 +25,27 @@ logging.basicConfig(filename='ddl_migration.log', filemode='w', level=logging.DE
 logging.getLogger('snowflake.connector').setLevel(logging.WARNING)
 
 
-class MySQLToPostgresMigrator:
-    def __init__(self, source_config: Dict[str, str], destination_config: Dict[str, str]):
-        self.exporter = MySQLExtractor(source_config)
-        self.converter = ToPostgresConverter()
-        self.importer = PostgresImporter(destination_config)
-
-    def migrate(self):
-        try:
-            # extractorr
-            mysql_ddl = self.exporter.extract_ddl()
-            
-            # converters
-            postgres_ddl = [self.converter.to_postgres(ddl) for ddl in mysql_ddl]
-            
-            # importers
-            self.importer.import_ddl(postgres_ddl)
-            
-            
-        except Exception as e:
-            logging.error(f"DDL migration failed in main.py migrate function: {e}")
-            raise
+#tempfiles was here
         
-class PostgresToMySQLMigrator:
-    def __init__(self, source_config: Dict[str, str], destination_config: Dict[str, str]):
-        self.exporter = PostgresExtractor(source_config)
-        self.converter = ToMySQLConverter()
-        self.importer = MySQLImporter(destination_config)
+class Exporter:
         
-        
-    def migrate(self):
-        
-        try:
-            
-            #extractor
-            postgres_ddl = self.exporter.extract_ddl()
-            
-            #converter
-            mysql_ddl = [self.converter.to_mysql(ddl) for ddl in postgres_ddl]
-
-            #importer
-            self.importer.import_ddl(mysql_ddl)
-            
-        except Exception as e:
-            logging.error(f"DDL migration failed in main.py migrate function: {e}")
-            raise
-        
-
-class SnowflakeToPostgresMigrator:
-    def __init__(self, source_config: Dict[str, str], destination_config: Dict[str, str]):
-        self.exporter = SnowflakeExtractor(source_config)
-        self.converter = ToPostgresConverter()
-        self.importer = PostgresImporter(destination_config)
-
-    def migrate(self):
-        try:
-            # extractorr
-            mysql_ddl = self.exporter.extract_ddl()
-            
-            # converters
-            postgres_ddl = [self.converter.to_postgres(ddl) for ddl in mysql_ddl]
-            
-            # importers
-            self.importer.import_ddl(postgres_ddl)
-            
-            
-        except Exception as e:
-            logging.error(f"DDL migration failed in main.py migrate function: {e}")
-            raise
-        
-class MySQLToSnowflakeMigrator:
-    def __init__(self, source_config, destination_config):
-        self.exporter = MySQLExtractor(source_config)
-        self.converter = ToSnowflakeConverter()
-        self.importer = SnowflakeImporter(destination_config)
-        
-    def migrate(self):
-        try:
-            mysql_ddl = self.exporter.extract_ddl()
-            snowflake_ddl = [self.converter.to_snowflake(ddl) for ddl in mysql_ddl]
-            self.importer.import_ddl(snowflake_ddl)
-        except Exception as e:
-            logging.error(f"DDL migration failed in MySQLToSnowflakeMigrator: {e}")
-            raise
-        
-        
-class PostgresToSnowflake:
-    def __init__(self, source_config, destination_config):
-        self.exporter = PostgresExtractor(source_config)
-        self.converter = ToSnowflakeConverter()
-        self.importer = SnowflakeImporter(destination_config)
-        
-    def migrate(self):
-        try:
-            postgres_ddl = self.exporter.extract_ddl()
-            snowflake_ddl = [self.converter.to_snowflake(ddl) for ddl in postgres_ddl]
-            self.importer.import_ddl(snowflake_ddl)
-        except Exception as e:
-            logging.error(f"DDL migration failed in PostgresToSnowflake: {e}")
-            raise
-
-class SnowflakeToMySQL:
-    def __init__(self, source_config, destination_config):
-        self.exporter = SnowflakeExtractor(source_config) 
-        self.converter = ToMySQLConverter()
-        self.importer = MySQLImporter(destination_config)
-        
-    def migrate(self):
-        try:
-            snowflake_ddl = self.exporter.extract_ddl()
-            mysql_ddl = [self.converter.to_mysql(ddl) for ddl in snowflake_ddl]
-            self.importer.import_ddl(mysql_ddl)
-        except Exception as e:
-            logging.error(f"DDL migration failed in SnowflakeToMySQL: {e}")
-            raise
-        
+    def mysql(self, source_config):
+        mysqlExtractor = MySQLExtractor(source_config)
+        ddl = mysqlExtractor.extract_ddl()
+        return ddl
+    
+    def postgres(self, source_config):
+        postgresExtractor = PostgresExtractor(source_config)
+        ddl = postgresExtractor.extract_ddl()
+        return ddl
+    
+    def snowflake(self, source_config):
+        snowflakeExtractor = SnowflakeExtractor(source_config)
+        ddl = snowflakeExtractor.extract_ddl()
+        return ddl
+    
 
 if __name__ == "__main__":
-    
     
     #parser to select source and destination
     parser = argparse.ArgumentParser(description='Enter Source with -s or --source & Destination with -d or --destination for DDL migration-conversion')
@@ -153,9 +56,7 @@ if __name__ == "__main__":
     source_list = args.source if args.source else []
     destination_list = args.destination if args.destination else []
     
-    #will change later with inclusion of more clients
-    source = source_list[0]
-    destination = destination_list[0]
+    combined_ddl = []
     
     # parser to take input from configuration file
     config = ConfigParser()
@@ -167,50 +68,96 @@ if __name__ == "__main__":
         raise
     
     
+    # main migrator try
     try:
-        #default configs to cloud based, if that dosent work got to except and switch to inhouse clients
-        source_config = {
-            "host":config[source]["host"],
-            "user":config[source]["user"],
-            "password":config[source]["password"],
-            "database":config[source]["database"],
-            "port":config[source]["port"],
-            # "account":config[source]["account"],
-            # "warehouse":config[source]["warehouse"],
-            # "schema":config[source]["schema"]
-        }
         
-        destination_config = {
-            "host":config[destination]["host"],
-            "user":config[destination]["user"],
-            "password":config[destination]["password"],
-            "database":config[destination]["database"],
-            "port":config[destination]["port"],
-            "account":config[destination]["account"],
-            "warehouse":config[destination]["warehouse"],
-            "schema":config[destination]["schema"]
-        }
-    
-    except Exception as e:
-        #put in house clients here with try block
+        #source config try
+        try:
+            
+            for source in source_list:
+                if source == 'mysql' or source == 'postgres':
+                    
+                    source_config = {
+                        "host":config[source]["host"],
+                        "user":config[source]["user"],
+                        "password":config[source]["password"],
+                        "database":config[source]["database"],
+                        "port":config[source]["port"]
+                    }
+                elif source == 'snowflake':
+                    source_config = {
+                        "host":config[source]["host"],
+                        "user":config[source]["user"],
+                        "password":config[source]["password"],
+                        "database":config[source]["database"],
+                        "port":config[source]["port"],
+                        "account":config[source]["account"],
+                        "warehouse":config[source]["warehouse"],
+                        "schema":config[source]["schema"]
+                    }
+                else:
+                    logging.error("Wrong Inputs Provided")
+                    raise
                 
-        print(f"Invalid Configuration Selected: {e}")
-        logging.error("Invalid Configuration/Configuration not Present in db.ini")
-        raise
-        
-    
-    try:
-        # migrator = MySQLToPostgresMigrator(source_config, destination_config) 
-        # migrator = PostgresToMySQLMigrator(source_config, destination_config)
-        # migrator = SnowflakeToPostgresMigrator(source_config,destination_config)
-        # migrator = MySQLToSnowflakeMigrator(source_config, destination_config)
-        migrator = PostgresToSnowflake(source_config, destination_config)
-        # migrator = SnowflakeToMySQL(source_config, destination_config)
-        
-        
-        migrator.migrate()
+                extractor = Exporter()    
+                method = getattr(extractor,source)
+                combined_ddl.extend(method(source_config))
+                
+            logging.debug(f"Combined Source DDL List: {len(combined_ddl)} which are: {combined_ddl}")
+            
+        except Exception as e:
+                    
+            print(f"Invalid Configuration Selected: {e}")
+            logging.error("Invalid Configuration/Configuration not Present in db.ini or Issue with source config")
+            raise
+            
+        try:
+            
+            for destination in destination_list:
+                if destination == 'mysql' or destination == 'postgres':
+                    destination_config = {
+                        "host":config[destination]["host"],
+                        "user":config[destination]["user"],
+                        "password":config[destination]["password"],
+                        "database":config[destination]["database"],
+                        "port":config[destination]["port"],
+                    }
+                elif destination == 'snowflake':
+                    destination_config = {
+                        "host":config[destination]["host"],
+                        "user":config[destination]["user"],
+                        "password":config[destination]["password"],
+                        "database":config[destination]["database"],
+                        "port":config[destination]["port"],
+                        "account":config[destination]["account"],
+                        "warehouse":config[destination]["warehouse"],
+                        "schema":config[destination]["schema"]
+                    }
+            
+                try:
+                    if destination == 'snowflake':
+                        snowflake_ddl = [ToSnowflakeConverter.to_snowflake(ddl) for ddl in combined_ddl]
+                        SnowflakeImporter(destination_config).import_ddl(snowflake_ddl)
+                    elif destination == 'mysql':
+                        mysql_ddl = [ToMySQLConverter.to_mysql(ddl) for ddl in combined_ddl]
+                        MySQLImporter(destination_config).import_ddl(mysql_ddl)
+                    elif destination == 'postgres':
+                        postgres_ddl = [ToPostgresConverter.to_postgres(ddl) for ddl in combined_ddl]
+                        PostgresImporter(destination_config).import_ddl(postgres_ddl)
+                    else:
+                        raise ValueError("Unsupported destination type")
+                except Exception as e:
+                    logging.error(f"Error In Importing: {e}")
+            
+        except Exception as e:
+            logging.error("Error In Destination Config: {e}")
+            raise
+            
+            
         logging.info("Migration completed successfully.")
         print("Migration completed successfully. Check the log file for details.")
+        
+        
     except Exception as e:
         print(f"Migration failed: {e}")
         print("Check the log file for more details.")

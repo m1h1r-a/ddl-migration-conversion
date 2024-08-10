@@ -31,6 +31,7 @@ class ToMySQLConverter:
             r'autoincrement start 1 increment 1 noorder':'AUTO_INCREMENT',
             r'NUMBER\((\d+),(\d+)\)' : r'DECIMAL(\1,\2)',
             r'VARCHAR\(16777216\)':'TEXT',
+            r'DEFAULT nextval\(\'\w+\'::regclass\)':'AUTO_INCREMENT',
         }
         
         for prev_ddl,mysql_map in mapper.items():

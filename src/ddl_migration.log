@@ -1,4 +1,84 @@
-10-08-2024 01:02:22 - DEBUG - Before Converting: CREATE TABLE public.orders (
+10-08-2024 11:29:19 - DEBUG - Combined Source DDL List: 3 which are: ['CREATE TABLE public.orders (\n    OrderID integer NOT NULL DEFAULT nextval(\'"orders_OrderID_seq"\'::regclass),\n    OrderDate date NOT NULL,\n    TotalAmount numeric NOT NULL,\n    CustomerID integer,\n    EmployeeID integer,\n    CONSTRAINT orders_pkey PRIMARY KEY ("OrderID"),\n    CONSTRAINT orders_CustomerID_fkey FOREIGN KEY ("CustomerID") REFERENCES customer("CustomerID") ON UPDATE CASCADE ON DELETE CASCADE,\n    CONSTRAINT orders_EmployeeID_fkey FOREIGN KEY ("EmployeeID") REFERENCES employees("EmployeeID")\n);', 'CREATE TABLE public.employees (\n    EmployeeID integer NOT NULL DEFAULT nextval(\'"employees_EmployeeID_seq"\'::regclass),\n    FirstName character varying(100) NOT NULL,\n    LastName character varying(100) NOT NULL,\n    MiddleName character varying(100) DEFAULT NULL::character varying,\n    DateOfBirth date,\n    Gender character(1) DEFAULT NULL::bpchar,\n    HireDate date,\n    JobTitle character varying(100) DEFAULT NULL::character varying,\n    Department character varying(100) DEFAULT NULL::character varying,\n    ManagerID integer,\n    Salary numeric DEFAULT NULL::numeric,\n    Bonus numeric DEFAULT NULL::numeric,\n    CommissionPct numeric DEFAULT NULL::numeric,\n    Email character varying(255) DEFAULT NULL::character varying,\n    PhoneNumber character varying(20) DEFAULT NULL::character varying,\n    StreetAddress character varying(255) DEFAULT NULL::character varying,\n    City character varying(100) DEFAULT NULL::character varying,\n    State character varying(100) DEFAULT NULL::character varying,\n    ZipCode character varying(20) DEFAULT NULL::character varying,\n    Country character varying(100) DEFAULT NULL::character varying,\n    EmergencyContactName character varying(100) DEFAULT NULL::character varying,\n    EmergencyContactPhone character varying(20) DEFAULT NULL::character varying,\n    EmergencyContactRelation character varying(50) DEFAULT NULL::character varying,\n    EmploymentStatus character varying(50) DEFAULT NULL::character varying,\n    WorkLocation character varying(100) DEFAULT NULL::character varying,\n    WorkPhone character varying(20) DEFAULT NULL::character varying,\n    Extension character varying(10) DEFAULT NULL::character varying,\n    WorkEmail character varying(255) DEFAULT NULL::character varying,\n    IsFullTime boolean,\n    IsPartTime boolean,\n    IsContractor boolean,\n    ContractStartDate date,\n    ContractEndDate date,\n    HoursPerWeek numeric DEFAULT NULL::numeric,\n    VacationDays integer,\n    SickDays integer,\n    IsEligibleForBenefits boolean,\n    HealthInsuranceProvider character varying(100) DEFAULT NULL::character varying,\n    RetirementPlanProvider character varying(100) DEFAULT NULL::character varying,\n    LastPromotionDate date,\n    LastPerformanceReviewDate date,\n    PerformanceScore numeric DEFAULT NULL::numeric,\n    YearsAtCompany numeric DEFAULT NULL::numeric,\n    LanguagesSpoken character varying(255) DEFAULT NULL::character varying,\n    Skills character varying(255) DEFAULT NULL::character varying,\n    EducationLevel character varying(50) DEFAULT NULL::character varying,\n    Certifications character varying(255) DEFAULT NULL::character varying,\n    Notes text,\n    CONSTRAINT employees_pkey PRIMARY KEY ("EmployeeID")\n);', 'CREATE TABLE public.customer (\n    CustomerID integer NOT NULL DEFAULT nextval(\'"customer_CustomerID_seq"\'::regclass),\n    CustomerName character varying(100) NOT NULL,\n    ContactNumber character varying(20) DEFAULT NULL::character varying,\n    Email character varying(255) DEFAULT NULL::character varying,\n    SalesRepID integer,\n    Address character varying(255) DEFAULT NULL::character varying,\n    CONSTRAINT customer_pkey PRIMARY KEY ("CustomerID"),\n    CONSTRAINT customer_SalesRepID_fkey FOREIGN KEY ("SalesRepID") REFERENCES employees("EmployeeID")\n);']
+10-08-2024 11:29:20 - INFO - Database 'tseout' created successfully.
+10-08-2024 11:29:20 - INFO - No. of DDL Statements Left to Be Executed: 3
+10-08-2024 11:29:20 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'customer'
+10-08-2024 11:29:20 - INFO -  RETRYING...
+10-08-2024 11:29:20 - INFO - No. of DDL Statements Left to Be Executed: 3
+10-08-2024 11:29:20 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS employees (
+    EmployeeID INT NOT NULL AUTO_INCREMENT,
+    FirstName VARCHAR(100) NOT NULL,
+    LastName VARCHAR(100) NOT NULL,
+    MiddleName VARCHAR(100) DEFAULT NULL,
+    DateOfBirth date,
+    Gender CHAR(1) DEFAULT NULL,
+    HireDate date,
+    JobTitle VARCHAR(100) DEFAULT NULL,
+    Department VARCHAR(100) DEFAULT NULL,
+    ManagerID INT,
+    Salary DECIMAL(10,2) DEFAULT NULL,
+    Bonus DECIMAL(10,2) DEFAULT NULL,
+    CommissionPct DECIMAL(10,2) DEFAULT NULL,
+    Email VARCHAR(255) DEFAULT NULL,
+    PhoneNumber VARCHAR(20) DEFAULT NULL,
+    StreetAddress VARCHAR(255) DEFAULT NULL,
+    City VARCHAR(100) DEFAULT NULL,
+    State VARCHAR(100) DEFAULT NULL,
+    ZipCode VARCHAR(20) DEFAULT NULL,
+    Country VARCHAR(100) DEFAULT NULL,
+    EmergencyContactName VARCHAR(100) DEFAULT NULL,
+    EmergencyContactPhone VARCHAR(20) DEFAULT NULL,
+    EmergencyContactRelation VARCHAR(50) DEFAULT NULL,
+    EmploymentStatus VARCHAR(50) DEFAULT NULL,
+    WorkLocation VARCHAR(100) DEFAULT NULL,
+    WorkPhone VARCHAR(20) DEFAULT NULL,
+    Extension VARCHAR(10) DEFAULT NULL,
+    WorkEmail VARCHAR(255) DEFAULT NULL,
+    IsFullTime boolean,
+    IsPartTime boolean,
+    IsContractor boolean,
+    ContractStartDate date,
+    ContractEndDate date,
+    HoursPerWeek DECIMAL(10,2) DEFAULT NULL,
+    VacationDays INT,
+    SickDays INT,
+    IsEligibleForBenefits boolean,
+    HealthInsuranceProvider VARCHAR(100) DEFAULT NULL,
+    RetirementPlanProvider VARCHAR(100) DEFAULT NULL,
+    LastPromotionDate date,
+    LastPerformanceReviewDate date,
+    PerformanceScore DECIMAL(10,2) DEFAULT NULL,
+    YearsAtCompany DECIMAL(10,2) DEFAULT NULL,
+    LanguagesSpoken VARCHAR(255) DEFAULT NULL,
+    Skills VARCHAR(255) DEFAULT NULL,
+    EducationLevel VARCHAR(50) DEFAULT NULL,
+    Certifications VARCHAR(255) DEFAULT NULL,
+    Notes TEXT,
+    PRIMARY KEY (EmployeeID)
+) ENGINE=InnoDB;
+10-08-2024 11:29:20 - INFO - No. of DDL Statements Left to Be Executed: 2
+10-08-2024 11:29:20 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS customer (
+    CustomerID INT NOT NULL AUTO_INCREMENT,
+    CustomerName VARCHAR(100) NOT NULL,
+    ContactNumber VARCHAR(20) DEFAULT NULL,
+    Email VARCHAR(255) DEFAULT NULL,
+    SalesRepID INT,
+    Address VARCHAR(255) DEFAULT NULL,
+    PRIMARY KEY (CustomerID),
+    FOREIGN KEY (SalesRepID) REFERENCES employees(EmployeeID)
+) ENGINE=InnoDB;
+10-08-2024 11:29:20 - INFO - No. of DDL Statements Left to Be Executed: 1
+10-08-2024 11:29:20 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS orders (
+    OrderID INT NOT NULL AUTO_INCREMENT,
+    OrderDate date NOT NULL,
+    TotalAmount DECIMAL(10,2) NOT NULL,
+    CustomerID INT,
+    EmployeeID INT,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
+    FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
+) ENGINE=InnoDB;
+10-08-2024 11:29:20 - INFO - Import to MySQL Succesfull!
+10-08-2024 11:29:20 - DEBUG - Before Converting: CREATE TABLE public.orders (
     OrderID integer NOT NULL DEFAULT nextval('"orders_OrderID_seq"'::regclass),
     OrderDate date NOT NULL,
     TotalAmount numeric NOT NULL,
@@ -8,7 +88,7 @@
     CONSTRAINT orders_CustomerID_fkey FOREIGN KEY ("CustomerID") REFERENCES customer("CustomerID") ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT orders_EmployeeID_fkey FOREIGN KEY ("EmployeeID") REFERENCES employees("EmployeeID")
 );
-10-08-2024 01:02:22 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS orders (
+10-08-2024 11:29:20 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS orders (
     OrderID INT NOT NULL IDENTITY(1,1),
     OrderDate date NOT NULL,
     TotalAmount DECIMAL(10,2) NOT NULL,
@@ -18,7 +98,7 @@
     FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
     FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
 );
-10-08-2024 01:02:22 - DEBUG - Before Converting: CREATE TABLE public.employees (
+10-08-2024 11:29:20 - DEBUG - Before Converting: CREATE TABLE public.employees (
     EmployeeID integer NOT NULL DEFAULT nextval('"employees_EmployeeID_seq"'::regclass),
     FirstName character varying(100) NOT NULL,
     LastName character varying(100) NOT NULL,
@@ -69,7 +149,7 @@
     Notes text,
     CONSTRAINT employees_pkey PRIMARY KEY ("EmployeeID")
 );
-10-08-2024 01:02:22 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS employees (
+10-08-2024 11:29:20 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS employees (
     EmployeeID INT NOT NULL IDENTITY(1,1),
     FirstName VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
@@ -120,7 +200,7 @@
     Notes TEXT,
     PRIMARY KEY (EmployeeID)
 );
-10-08-2024 01:02:22 - DEBUG - Before Converting: CREATE TABLE public.customer (
+10-08-2024 11:29:20 - DEBUG - Before Converting: CREATE TABLE public.customer (
     CustomerID integer NOT NULL DEFAULT nextval('"customer_CustomerID_seq"'::regclass),
     CustomerName character varying(100) NOT NULL,
     ContactNumber character varying(20) DEFAULT NULL::character varying,
@@ -130,7 +210,7 @@
     CONSTRAINT customer_pkey PRIMARY KEY ("CustomerID"),
     CONSTRAINT customer_SalesRepID_fkey FOREIGN KEY ("SalesRepID") REFERENCES employees("EmployeeID")
 );
-10-08-2024 01:02:22 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS customer (
+10-08-2024 11:29:20 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS customer (
     CustomerID INT NOT NULL IDENTITY(1,1),
     CustomerName VARCHAR(100) NOT NULL,
     ContactNumber VARCHAR(20) DEFAULT NULL,
@@ -140,14 +220,14 @@
     PRIMARY KEY (CustomerID),
     FOREIGN KEY (SalesRepID) REFERENCES employees(EmployeeID)
 );
-10-08-2024 01:02:23 - INFO - Connected to Snowflake successfully.
-10-08-2024 01:02:23 - INFO - Database 'finall' created or already exists and is now in use.
-10-08-2024 01:02:23 - DEBUG - No. of DDL Statements Left to Be Executed: 3
-10-08-2024 01:02:24 - WARNING - Execution Failed: 002003 (42S02): SQL compilation error:
-Table 'FINALL.PUBLIC.CUSTOMER' does not exist or not authorized.
-10-08-2024 01:02:24 - INFO - RETRYING....
-10-08-2024 01:02:24 - DEBUG - No. of DDL Statements Left to Be Executed: 3
-10-08-2024 01:02:24 - DEBUG - Executed DDL Succesfully: CREATE TABLE IF NOT EXISTS employees (
+10-08-2024 11:29:22 - INFO - Connected to Snowflake successfully.
+10-08-2024 11:29:23 - INFO - Database 'tesetouttput' created or already exists and is now in use.
+10-08-2024 11:29:23 - DEBUG - No. of DDL Statements Left to Be Executed: 3
+10-08-2024 11:29:23 - WARNING - Execution Failed: 002003 (42S02): SQL compilation error:
+Table 'TESETOUTTPUT.PUBLIC.CUSTOMER' does not exist or not authorized.
+10-08-2024 11:29:23 - INFO - RETRYING....
+10-08-2024 11:29:23 - DEBUG - No. of DDL Statements Left to Be Executed: 3
+10-08-2024 11:29:24 - DEBUG - Executed DDL Succesfully: CREATE TABLE IF NOT EXISTS employees (
     EmployeeID INT NOT NULL IDENTITY(1,1),
     FirstName VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
@@ -198,8 +278,8 @@ Table 'FINALL.PUBLIC.CUSTOMER' does not exist or not authorized.
     Notes TEXT,
     PRIMARY KEY (EmployeeID)
 );
-10-08-2024 01:02:24 - DEBUG - No. of DDL Statements Left to Be Executed: 2
-10-08-2024 01:02:24 - DEBUG - Executed DDL Succesfully: CREATE TABLE IF NOT EXISTS customer (
+10-08-2024 11:29:24 - DEBUG - No. of DDL Statements Left to Be Executed: 2
+10-08-2024 11:29:24 - DEBUG - Executed DDL Succesfully: CREATE TABLE IF NOT EXISTS customer (
     CustomerID INT NOT NULL IDENTITY(1,1),
     CustomerName VARCHAR(100) NOT NULL,
     ContactNumber VARCHAR(20) DEFAULT NULL,
@@ -209,8 +289,8 @@ Table 'FINALL.PUBLIC.CUSTOMER' does not exist or not authorized.
     PRIMARY KEY (CustomerID),
     FOREIGN KEY (SalesRepID) REFERENCES employees(EmployeeID)
 );
-10-08-2024 01:02:24 - DEBUG - No. of DDL Statements Left to Be Executed: 1
-10-08-2024 01:02:24 - DEBUG - Executed DDL Succesfully: CREATE TABLE IF NOT EXISTS orders (
+10-08-2024 11:29:24 - DEBUG - No. of DDL Statements Left to Be Executed: 1
+10-08-2024 11:29:25 - DEBUG - Executed DDL Succesfully: CREATE TABLE IF NOT EXISTS orders (
     OrderID INT NOT NULL IDENTITY(1,1),
     OrderDate date NOT NULL,
     TotalAmount DECIMAL(10,2) NOT NULL,
@@ -220,5 +300,4 @@ Table 'FINALL.PUBLIC.CUSTOMER' does not exist or not authorized.
     FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
     FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
 );
-10-08-2024 01:02:24 - INFO - Import Succesfull to Snowflake!
-10-08-2024 01:02:24 - INFO - Migration completed successfully.
+10-08-2024 11:29:25 - INFO - Import Succesfull to Snowflake!
