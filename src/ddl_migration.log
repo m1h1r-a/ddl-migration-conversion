@@ -1,303 +1,137 @@
-10-08-2024 11:29:19 - DEBUG - Combined Source DDL List: 3 which are: ['CREATE TABLE public.orders (\n    OrderID integer NOT NULL DEFAULT nextval(\'"orders_OrderID_seq"\'::regclass),\n    OrderDate date NOT NULL,\n    TotalAmount numeric NOT NULL,\n    CustomerID integer,\n    EmployeeID integer,\n    CONSTRAINT orders_pkey PRIMARY KEY ("OrderID"),\n    CONSTRAINT orders_CustomerID_fkey FOREIGN KEY ("CustomerID") REFERENCES customer("CustomerID") ON UPDATE CASCADE ON DELETE CASCADE,\n    CONSTRAINT orders_EmployeeID_fkey FOREIGN KEY ("EmployeeID") REFERENCES employees("EmployeeID")\n);', 'CREATE TABLE public.employees (\n    EmployeeID integer NOT NULL DEFAULT nextval(\'"employees_EmployeeID_seq"\'::regclass),\n    FirstName character varying(100) NOT NULL,\n    LastName character varying(100) NOT NULL,\n    MiddleName character varying(100) DEFAULT NULL::character varying,\n    DateOfBirth date,\n    Gender character(1) DEFAULT NULL::bpchar,\n    HireDate date,\n    JobTitle character varying(100) DEFAULT NULL::character varying,\n    Department character varying(100) DEFAULT NULL::character varying,\n    ManagerID integer,\n    Salary numeric DEFAULT NULL::numeric,\n    Bonus numeric DEFAULT NULL::numeric,\n    CommissionPct numeric DEFAULT NULL::numeric,\n    Email character varying(255) DEFAULT NULL::character varying,\n    PhoneNumber character varying(20) DEFAULT NULL::character varying,\n    StreetAddress character varying(255) DEFAULT NULL::character varying,\n    City character varying(100) DEFAULT NULL::character varying,\n    State character varying(100) DEFAULT NULL::character varying,\n    ZipCode character varying(20) DEFAULT NULL::character varying,\n    Country character varying(100) DEFAULT NULL::character varying,\n    EmergencyContactName character varying(100) DEFAULT NULL::character varying,\n    EmergencyContactPhone character varying(20) DEFAULT NULL::character varying,\n    EmergencyContactRelation character varying(50) DEFAULT NULL::character varying,\n    EmploymentStatus character varying(50) DEFAULT NULL::character varying,\n    WorkLocation character varying(100) DEFAULT NULL::character varying,\n    WorkPhone character varying(20) DEFAULT NULL::character varying,\n    Extension character varying(10) DEFAULT NULL::character varying,\n    WorkEmail character varying(255) DEFAULT NULL::character varying,\n    IsFullTime boolean,\n    IsPartTime boolean,\n    IsContractor boolean,\n    ContractStartDate date,\n    ContractEndDate date,\n    HoursPerWeek numeric DEFAULT NULL::numeric,\n    VacationDays integer,\n    SickDays integer,\n    IsEligibleForBenefits boolean,\n    HealthInsuranceProvider character varying(100) DEFAULT NULL::character varying,\n    RetirementPlanProvider character varying(100) DEFAULT NULL::character varying,\n    LastPromotionDate date,\n    LastPerformanceReviewDate date,\n    PerformanceScore numeric DEFAULT NULL::numeric,\n    YearsAtCompany numeric DEFAULT NULL::numeric,\n    LanguagesSpoken character varying(255) DEFAULT NULL::character varying,\n    Skills character varying(255) DEFAULT NULL::character varying,\n    EducationLevel character varying(50) DEFAULT NULL::character varying,\n    Certifications character varying(255) DEFAULT NULL::character varying,\n    Notes text,\n    CONSTRAINT employees_pkey PRIMARY KEY ("EmployeeID")\n);', 'CREATE TABLE public.customer (\n    CustomerID integer NOT NULL DEFAULT nextval(\'"customer_CustomerID_seq"\'::regclass),\n    CustomerName character varying(100) NOT NULL,\n    ContactNumber character varying(20) DEFAULT NULL::character varying,\n    Email character varying(255) DEFAULT NULL::character varying,\n    SalesRepID integer,\n    Address character varying(255) DEFAULT NULL::character varying,\n    CONSTRAINT customer_pkey PRIMARY KEY ("CustomerID"),\n    CONSTRAINT customer_SalesRepID_fkey FOREIGN KEY ("SalesRepID") REFERENCES employees("EmployeeID")\n);']
-10-08-2024 11:29:20 - INFO - Database 'tseout' created successfully.
-10-08-2024 11:29:20 - INFO - No. of DDL Statements Left to Be Executed: 3
-10-08-2024 11:29:20 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'customer'
-10-08-2024 11:29:20 - INFO -  RETRYING...
-10-08-2024 11:29:20 - INFO - No. of DDL Statements Left to Be Executed: 3
-10-08-2024 11:29:20 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS employees (
-    EmployeeID INT NOT NULL AUTO_INCREMENT,
-    FirstName VARCHAR(100) NOT NULL,
-    LastName VARCHAR(100) NOT NULL,
-    MiddleName VARCHAR(100) DEFAULT NULL,
-    DateOfBirth date,
-    Gender CHAR(1) DEFAULT NULL,
-    HireDate date,
-    JobTitle VARCHAR(100) DEFAULT NULL,
-    Department VARCHAR(100) DEFAULT NULL,
-    ManagerID INT,
-    Salary DECIMAL(10,2) DEFAULT NULL,
-    Bonus DECIMAL(10,2) DEFAULT NULL,
-    CommissionPct DECIMAL(10,2) DEFAULT NULL,
-    Email VARCHAR(255) DEFAULT NULL,
-    PhoneNumber VARCHAR(20) DEFAULT NULL,
-    StreetAddress VARCHAR(255) DEFAULT NULL,
-    City VARCHAR(100) DEFAULT NULL,
-    State VARCHAR(100) DEFAULT NULL,
-    ZipCode VARCHAR(20) DEFAULT NULL,
-    Country VARCHAR(100) DEFAULT NULL,
-    EmergencyContactName VARCHAR(100) DEFAULT NULL,
-    EmergencyContactPhone VARCHAR(20) DEFAULT NULL,
-    EmergencyContactRelation VARCHAR(50) DEFAULT NULL,
-    EmploymentStatus VARCHAR(50) DEFAULT NULL,
-    WorkLocation VARCHAR(100) DEFAULT NULL,
-    WorkPhone VARCHAR(20) DEFAULT NULL,
-    Extension VARCHAR(10) DEFAULT NULL,
-    WorkEmail VARCHAR(255) DEFAULT NULL,
-    IsFullTime boolean,
-    IsPartTime boolean,
-    IsContractor boolean,
-    ContractStartDate date,
-    ContractEndDate date,
-    HoursPerWeek DECIMAL(10,2) DEFAULT NULL,
-    VacationDays INT,
-    SickDays INT,
-    IsEligibleForBenefits boolean,
-    HealthInsuranceProvider VARCHAR(100) DEFAULT NULL,
-    RetirementPlanProvider VARCHAR(100) DEFAULT NULL,
-    LastPromotionDate date,
-    LastPerformanceReviewDate date,
-    PerformanceScore DECIMAL(10,2) DEFAULT NULL,
-    YearsAtCompany DECIMAL(10,2) DEFAULT NULL,
-    LanguagesSpoken VARCHAR(255) DEFAULT NULL,
-    Skills VARCHAR(255) DEFAULT NULL,
-    EducationLevel VARCHAR(50) DEFAULT NULL,
-    Certifications VARCHAR(255) DEFAULT NULL,
-    Notes TEXT,
-    PRIMARY KEY (EmployeeID)
+11-08-2024 11:32:27 - INFO - Changes detected. Number of DDL statements: 4
+11-08-2024 11:32:27 - INFO - Database 'output' created successfully.
+11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 2
+11-08-2024 11:32:27 - DEBUG - Executed : DROP TABLE IF EXISTS pets
+11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 1
+11-08-2024 11:32:27 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS pets (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    species VARCHAR(50) NOT NULL,
+    breed VARCHAR(50) DEFAULT NULL,
+    owner_name VARCHAR(100) DEFAULT NULL,
+    date_of_adoption date,
+    is_vaccinated boolean DEFAULT false,
+    test VARCHAR(30) DEFAULT NULL,
+    color VARCHAR(30) DEFAULT NULL,
+    testfield VARCHAR(30) DEFAULT NULL,
+    PRIMARY KEY (id)
 ) ENGINE=InnoDB;
-10-08-2024 11:29:20 - INFO - No. of DDL Statements Left to Be Executed: 2
-10-08-2024 11:29:20 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS customer (
-    CustomerID INT NOT NULL AUTO_INCREMENT,
-    CustomerName VARCHAR(100) NOT NULL,
-    ContactNumber VARCHAR(20) DEFAULT NULL,
-    Email VARCHAR(255) DEFAULT NULL,
-    SalesRepID INT,
-    Address VARCHAR(255) DEFAULT NULL,
-    PRIMARY KEY (CustomerID),
-    FOREIGN KEY (SalesRepID) REFERENCES employees(EmployeeID)
+11-08-2024 11:32:27 - INFO - Import to MySQL Succesfull!
+11-08-2024 11:32:27 - INFO - Database 'output' already exists.
+11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 6
+11-08-2024 11:32:27 - DEBUG - Executed : DROP TABLE IF EXISTS CUSTOMER
+11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 5
+11-08-2024 11:32:27 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'employees'
+11-08-2024 11:32:27 - INFO -  RETRYING...
+11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 5
+11-08-2024 11:32:27 - DEBUG - Executed : DROP TABLE IF EXISTS EMPLOYEES
+11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 4
+11-08-2024 11:32:27 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS EMPLOYEES (
+	EMPLOYEEID INT NOT NULL AUTO_INCREMENT,
+	FIRSTNAME VARCHAR(100) NOT NULL,
+	LASTNAME VARCHAR(100) NOT NULL,
+	MIDDLENAME VARCHAR(100),
+	DATEOFBIRTH DATE,
+	GENDER VARCHAR(1),
+	HIREDATE DATE,
+	JOBTITLE VARCHAR(100),
+	DEPARTMENT VARCHAR(100),
+	MANAGERID INT,
+	SALARY DECIMAL(10,2),
+	BONUS DECIMAL(10,2),
+	COMMISSIONPCT DECIMAL(10,2),
+	EMAIL VARCHAR(255),
+	PHONENUMBER VARCHAR(20),
+	STREETADDRESS VARCHAR(255),
+	CITY VARCHAR(100),
+	STATE VARCHAR(100),
+	ZIPCODE VARCHAR(20),
+	COUNTRY VARCHAR(100),
+	EMERGENCYCONTACTNAME VARCHAR(100),
+	EMERGENCYCONTACTPHONE VARCHAR(20),
+	EMERGENCYCONTACTRELATION VARCHAR(50),
+	EMPLOYMENTSTATUS VARCHAR(50),
+	WORKLOCATION VARCHAR(100),
+	WORKPHONE VARCHAR(20),
+	EXTENSION VARCHAR(10),
+	WORKEMAIL VARCHAR(255),
+	ISFULLTIME BOOLEAN,
+	ISPARTTIME BOOLEAN,
+	ISCONTRACTOR BOOLEAN,
+	CONTRACTSTARTDATE DATE,
+	CONTRACTENDDATE DATE,
+	HOURSPERWEEK DECIMAL(10,2),
+	VACATIONDAYS INT,
+	SICKDAYS INT,
+	ISELIGIBLEFORBENEFITS BOOLEAN,
+	HEALTHINSURANCEPROVIDER VARCHAR(100),
+	RETIREMENTPLANPROVIDER VARCHAR(100),
+	LASTPROMOTIONDATE DATE,
+	LASTPERFORMANCEREVIEWDATE DATE,
+	PERFORMANCESCORE DECIMAL(10,2),
+	YEARSATCOMPANY DECIMAL(10,2),
+	LANGUAGESSPOKEN VARCHAR(255),
+	SKILLS VARCHAR(255),
+	EDUCATIONLEVEL VARCHAR(50),
+	CERTIFICATIONS VARCHAR(255),
+	NOTES TEXT,
+	primary key (EMPLOYEEID)
 ) ENGINE=InnoDB;
-10-08-2024 11:29:20 - INFO - No. of DDL Statements Left to Be Executed: 1
-10-08-2024 11:29:20 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS orders (
-    OrderID INT NOT NULL AUTO_INCREMENT,
-    OrderDate date NOT NULL,
-    TotalAmount DECIMAL(10,2) NOT NULL,
-    CustomerID INT,
-    EmployeeID INT,
-    PRIMARY KEY (OrderID),
-    FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
-    FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
+11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 3
+11-08-2024 11:32:27 - DEBUG - Executed : DROP TABLE IF EXISTS ORDERS
+11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 2
+11-08-2024 11:32:27 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'customer'
+11-08-2024 11:32:27 - INFO -  RETRYING...
+11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 2
+11-08-2024 11:32:28 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS CUSTOMER (
+	CUSTOMERID INT NOT NULL AUTO_INCREMENT,
+	CUSTOMERNAME VARCHAR(100) NOT NULL,
+	CONTACTNUMBER VARCHAR(20),
+	EMAIL VARCHAR(255),
+	SALESREPID INT,
+	ADDRESS VARCHAR(255),
+	primary key (CUSTOMERID),
+	foreign key (SALESREPID) references EMPLOYEES(EMPLOYEEID)
 ) ENGINE=InnoDB;
-10-08-2024 11:29:20 - INFO - Import to MySQL Succesfull!
-10-08-2024 11:29:20 - DEBUG - Before Converting: CREATE TABLE public.orders (
-    OrderID integer NOT NULL DEFAULT nextval('"orders_OrderID_seq"'::regclass),
-    OrderDate date NOT NULL,
-    TotalAmount numeric NOT NULL,
-    CustomerID integer,
-    EmployeeID integer,
-    CONSTRAINT orders_pkey PRIMARY KEY ("OrderID"),
-    CONSTRAINT orders_CustomerID_fkey FOREIGN KEY ("CustomerID") REFERENCES customer("CustomerID") ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT orders_EmployeeID_fkey FOREIGN KEY ("EmployeeID") REFERENCES employees("EmployeeID")
-);
-10-08-2024 11:29:20 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS orders (
-    OrderID INT NOT NULL IDENTITY(1,1),
-    OrderDate date NOT NULL,
-    TotalAmount DECIMAL(10,2) NOT NULL,
-    CustomerID INT,
-    EmployeeID INT,
-    PRIMARY KEY (OrderID),
-    FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
-    FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
-);
-10-08-2024 11:29:20 - DEBUG - Before Converting: CREATE TABLE public.employees (
-    EmployeeID integer NOT NULL DEFAULT nextval('"employees_EmployeeID_seq"'::regclass),
-    FirstName character varying(100) NOT NULL,
-    LastName character varying(100) NOT NULL,
-    MiddleName character varying(100) DEFAULT NULL::character varying,
-    DateOfBirth date,
-    Gender character(1) DEFAULT NULL::bpchar,
-    HireDate date,
-    JobTitle character varying(100) DEFAULT NULL::character varying,
-    Department character varying(100) DEFAULT NULL::character varying,
-    ManagerID integer,
-    Salary numeric DEFAULT NULL::numeric,
-    Bonus numeric DEFAULT NULL::numeric,
-    CommissionPct numeric DEFAULT NULL::numeric,
-    Email character varying(255) DEFAULT NULL::character varying,
-    PhoneNumber character varying(20) DEFAULT NULL::character varying,
-    StreetAddress character varying(255) DEFAULT NULL::character varying,
-    City character varying(100) DEFAULT NULL::character varying,
-    State character varying(100) DEFAULT NULL::character varying,
-    ZipCode character varying(20) DEFAULT NULL::character varying,
-    Country character varying(100) DEFAULT NULL::character varying,
-    EmergencyContactName character varying(100) DEFAULT NULL::character varying,
-    EmergencyContactPhone character varying(20) DEFAULT NULL::character varying,
-    EmergencyContactRelation character varying(50) DEFAULT NULL::character varying,
-    EmploymentStatus character varying(50) DEFAULT NULL::character varying,
-    WorkLocation character varying(100) DEFAULT NULL::character varying,
-    WorkPhone character varying(20) DEFAULT NULL::character varying,
-    Extension character varying(10) DEFAULT NULL::character varying,
-    WorkEmail character varying(255) DEFAULT NULL::character varying,
-    IsFullTime boolean,
-    IsPartTime boolean,
-    IsContractor boolean,
-    ContractStartDate date,
-    ContractEndDate date,
-    HoursPerWeek numeric DEFAULT NULL::numeric,
-    VacationDays integer,
-    SickDays integer,
-    IsEligibleForBenefits boolean,
-    HealthInsuranceProvider character varying(100) DEFAULT NULL::character varying,
-    RetirementPlanProvider character varying(100) DEFAULT NULL::character varying,
-    LastPromotionDate date,
-    LastPerformanceReviewDate date,
-    PerformanceScore numeric DEFAULT NULL::numeric,
-    YearsAtCompany numeric DEFAULT NULL::numeric,
-    LanguagesSpoken character varying(255) DEFAULT NULL::character varying,
-    Skills character varying(255) DEFAULT NULL::character varying,
-    EducationLevel character varying(50) DEFAULT NULL::character varying,
-    Certifications character varying(255) DEFAULT NULL::character varying,
-    Notes text,
-    CONSTRAINT employees_pkey PRIMARY KEY ("EmployeeID")
-);
-10-08-2024 11:29:20 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS employees (
-    EmployeeID INT NOT NULL IDENTITY(1,1),
-    FirstName VARCHAR(100) NOT NULL,
-    LastName VARCHAR(100) NOT NULL,
-    MiddleName VARCHAR(100) DEFAULT NULL,
-    DateOfBirth date,
-    Gender CHAR(1) DEFAULT NULL,
-    HireDate date,
-    JobTitle VARCHAR(100) DEFAULT NULL,
-    Department VARCHAR(100) DEFAULT NULL,
-    ManagerID INT,
-    Salary DECIMAL(10,2) DEFAULT NULL,
-    Bonus DECIMAL(10,2) DEFAULT NULL,
-    CommissionPct DECIMAL(10,2) DEFAULT NULL,
-    Email VARCHAR(255) DEFAULT NULL,
-    PhoneNumber VARCHAR(20) DEFAULT NULL,
-    StreetAddress VARCHAR(255) DEFAULT NULL,
-    City VARCHAR(100) DEFAULT NULL,
-    State VARCHAR(100) DEFAULT NULL,
-    ZipCode VARCHAR(20) DEFAULT NULL,
-    Country VARCHAR(100) DEFAULT NULL,
-    EmergencyContactName VARCHAR(100) DEFAULT NULL,
-    EmergencyContactPhone VARCHAR(20) DEFAULT NULL,
-    EmergencyContactRelation VARCHAR(50) DEFAULT NULL,
-    EmploymentStatus VARCHAR(50) DEFAULT NULL,
-    WorkLocation VARCHAR(100) DEFAULT NULL,
-    WorkPhone VARCHAR(20) DEFAULT NULL,
-    Extension VARCHAR(10) DEFAULT NULL,
-    WorkEmail VARCHAR(255) DEFAULT NULL,
-    IsFullTime boolean,
-    IsPartTime boolean,
-    IsContractor boolean,
-    ContractStartDate date,
-    ContractEndDate date,
-    HoursPerWeek DECIMAL(10,2) DEFAULT NULL,
-    VacationDays INT,
-    SickDays INT,
-    IsEligibleForBenefits boolean,
-    HealthInsuranceProvider VARCHAR(100) DEFAULT NULL,
-    RetirementPlanProvider VARCHAR(100) DEFAULT NULL,
-    LastPromotionDate date,
-    LastPerformanceReviewDate date,
-    PerformanceScore DECIMAL(10,2) DEFAULT NULL,
-    YearsAtCompany DECIMAL(10,2) DEFAULT NULL,
-    LanguagesSpoken VARCHAR(255) DEFAULT NULL,
-    Skills VARCHAR(255) DEFAULT NULL,
-    EducationLevel VARCHAR(50) DEFAULT NULL,
-    Certifications VARCHAR(255) DEFAULT NULL,
-    Notes TEXT,
-    PRIMARY KEY (EmployeeID)
-);
-10-08-2024 11:29:20 - DEBUG - Before Converting: CREATE TABLE public.customer (
-    CustomerID integer NOT NULL DEFAULT nextval('"customer_CustomerID_seq"'::regclass),
-    CustomerName character varying(100) NOT NULL,
-    ContactNumber character varying(20) DEFAULT NULL::character varying,
-    Email character varying(255) DEFAULT NULL::character varying,
-    SalesRepID integer,
-    Address character varying(255) DEFAULT NULL::character varying,
-    CONSTRAINT customer_pkey PRIMARY KEY ("CustomerID"),
-    CONSTRAINT customer_SalesRepID_fkey FOREIGN KEY ("SalesRepID") REFERENCES employees("EmployeeID")
-);
-10-08-2024 11:29:20 - DEBUG - After Converting: CREATE TABLE IF NOT EXISTS customer (
-    CustomerID INT NOT NULL IDENTITY(1,1),
-    CustomerName VARCHAR(100) NOT NULL,
-    ContactNumber VARCHAR(20) DEFAULT NULL,
-    Email VARCHAR(255) DEFAULT NULL,
-    SalesRepID INT,
-    Address VARCHAR(255) DEFAULT NULL,
-    PRIMARY KEY (CustomerID),
-    FOREIGN KEY (SalesRepID) REFERENCES employees(EmployeeID)
-);
-10-08-2024 11:29:22 - INFO - Connected to Snowflake successfully.
-10-08-2024 11:29:23 - INFO - Database 'tesetouttput' created or already exists and is now in use.
-10-08-2024 11:29:23 - DEBUG - No. of DDL Statements Left to Be Executed: 3
-10-08-2024 11:29:23 - WARNING - Execution Failed: 002003 (42S02): SQL compilation error:
-Table 'TESETOUTTPUT.PUBLIC.CUSTOMER' does not exist or not authorized.
-10-08-2024 11:29:23 - INFO - RETRYING....
-10-08-2024 11:29:23 - DEBUG - No. of DDL Statements Left to Be Executed: 3
-10-08-2024 11:29:24 - DEBUG - Executed DDL Succesfully: CREATE TABLE IF NOT EXISTS employees (
-    EmployeeID INT NOT NULL IDENTITY(1,1),
-    FirstName VARCHAR(100) NOT NULL,
-    LastName VARCHAR(100) NOT NULL,
-    MiddleName VARCHAR(100) DEFAULT NULL,
-    DateOfBirth date,
-    Gender CHAR(1) DEFAULT NULL,
-    HireDate date,
-    JobTitle VARCHAR(100) DEFAULT NULL,
-    Department VARCHAR(100) DEFAULT NULL,
-    ManagerID INT,
-    Salary DECIMAL(10,2) DEFAULT NULL,
-    Bonus DECIMAL(10,2) DEFAULT NULL,
-    CommissionPct DECIMAL(10,2) DEFAULT NULL,
-    Email VARCHAR(255) DEFAULT NULL,
-    PhoneNumber VARCHAR(20) DEFAULT NULL,
-    StreetAddress VARCHAR(255) DEFAULT NULL,
-    City VARCHAR(100) DEFAULT NULL,
-    State VARCHAR(100) DEFAULT NULL,
-    ZipCode VARCHAR(20) DEFAULT NULL,
-    Country VARCHAR(100) DEFAULT NULL,
-    EmergencyContactName VARCHAR(100) DEFAULT NULL,
-    EmergencyContactPhone VARCHAR(20) DEFAULT NULL,
-    EmergencyContactRelation VARCHAR(50) DEFAULT NULL,
-    EmploymentStatus VARCHAR(50) DEFAULT NULL,
-    WorkLocation VARCHAR(100) DEFAULT NULL,
-    WorkPhone VARCHAR(20) DEFAULT NULL,
-    Extension VARCHAR(10) DEFAULT NULL,
-    WorkEmail VARCHAR(255) DEFAULT NULL,
-    IsFullTime boolean,
-    IsPartTime boolean,
-    IsContractor boolean,
-    ContractStartDate date,
-    ContractEndDate date,
-    HoursPerWeek DECIMAL(10,2) DEFAULT NULL,
-    VacationDays INT,
-    SickDays INT,
-    IsEligibleForBenefits boolean,
-    HealthInsuranceProvider VARCHAR(100) DEFAULT NULL,
-    RetirementPlanProvider VARCHAR(100) DEFAULT NULL,
-    LastPromotionDate date,
-    LastPerformanceReviewDate date,
-    PerformanceScore DECIMAL(10,2) DEFAULT NULL,
-    YearsAtCompany DECIMAL(10,2) DEFAULT NULL,
-    LanguagesSpoken VARCHAR(255) DEFAULT NULL,
-    Skills VARCHAR(255) DEFAULT NULL,
-    EducationLevel VARCHAR(50) DEFAULT NULL,
-    Certifications VARCHAR(255) DEFAULT NULL,
-    Notes TEXT,
-    PRIMARY KEY (EmployeeID)
-);
-10-08-2024 11:29:24 - DEBUG - No. of DDL Statements Left to Be Executed: 2
-10-08-2024 11:29:24 - DEBUG - Executed DDL Succesfully: CREATE TABLE IF NOT EXISTS customer (
-    CustomerID INT NOT NULL IDENTITY(1,1),
-    CustomerName VARCHAR(100) NOT NULL,
-    ContactNumber VARCHAR(20) DEFAULT NULL,
-    Email VARCHAR(255) DEFAULT NULL,
-    SalesRepID INT,
-    Address VARCHAR(255) DEFAULT NULL,
-    PRIMARY KEY (CustomerID),
-    FOREIGN KEY (SalesRepID) REFERENCES employees(EmployeeID)
-);
-10-08-2024 11:29:24 - DEBUG - No. of DDL Statements Left to Be Executed: 1
-10-08-2024 11:29:25 - DEBUG - Executed DDL Succesfully: CREATE TABLE IF NOT EXISTS orders (
-    OrderID INT NOT NULL IDENTITY(1,1),
-    OrderDate date NOT NULL,
-    TotalAmount DECIMAL(10,2) NOT NULL,
-    CustomerID INT,
-    EmployeeID INT,
-    PRIMARY KEY (OrderID),
-    FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID) ,
-    FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
-);
-10-08-2024 11:29:25 - INFO - Import Succesfull to Snowflake!
+11-08-2024 11:32:28 - INFO - No. of DDL Statements Left to Be Executed: 1
+11-08-2024 11:32:28 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS ORDERS (
+	ORDERID INT NOT NULL AUTO_INCREMENT,
+	ORDERDATE DATE NOT NULL,
+	TOTALAMOUNT DECIMAL(10,2) NOT NULL,
+	CUSTOMERID INT,
+	EMPLOYEEID INT,
+	primary key (ORDERID),
+	foreign key (CUSTOMERID) references CUSTOMER(CUSTOMERID),
+	foreign key (EMPLOYEEID) references EMPLOYEES(EMPLOYEEID)
+) ENGINE=InnoDB;
+11-08-2024 11:32:28 - INFO - Import to MySQL Succesfull!
+11-08-2024 11:32:28 - INFO - Migration of changes completed successfully.
+11-08-2024 11:32:41 - DEBUG - No changes detected.
+11-08-2024 11:32:53 - DEBUG - No changes detected.
+11-08-2024 11:33:06 - DEBUG - No changes detected.
+11-08-2024 11:33:19 - DEBUG - No changes detected.
+11-08-2024 11:33:32 - DEBUG - No changes detected.
+11-08-2024 11:33:46 - DEBUG - No changes detected.
+11-08-2024 11:34:00 - DEBUG - No changes detected.
+11-08-2024 11:34:13 - INFO - Changes detected. Number of DDL statements: 1
+11-08-2024 11:34:13 - INFO - Database 'output' already exists.
+11-08-2024 11:34:13 - INFO - No. of DDL Statements Left to Be Executed: 2
+11-08-2024 11:34:13 - DEBUG - Executed : DROP TABLE IF EXISTS pets
+11-08-2024 11:34:13 - INFO - No. of DDL Statements Left to Be Executed: 1
+11-08-2024 11:34:13 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS pets (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    species VARCHAR(50) NOT NULL,
+    breed VARCHAR(50) DEFAULT NULL,
+    owner_name VARCHAR(100) DEFAULT NULL,
+    date_of_adoption date,
+    is_vaccinated boolean DEFAULT false,
+    test VARCHAR(30) DEFAULT NULL,
+    color VARCHAR(30) DEFAULT NULL,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB;
+11-08-2024 11:34:13 - INFO - Import to MySQL Succesfull!
+11-08-2024 11:34:13 - INFO - Migration of changes completed successfully.
+11-08-2024 11:34:26 - DEBUG - No changes detected.
+11-08-2024 11:34:39 - DEBUG - No changes detected.
+11-08-2024 11:34:53 - DEBUG - No changes detected.
