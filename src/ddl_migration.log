@@ -1,9 +1,9 @@
-11-08-2024 11:32:27 - INFO - Changes detected. Number of DDL statements: 4
-11-08-2024 11:32:27 - INFO - Database 'output' created successfully.
-11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 2
-11-08-2024 11:32:27 - DEBUG - Executed : DROP TABLE IF EXISTS pets
-11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 1
-11-08-2024 11:32:27 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS pets (
+11-08-2024 12:46:10 - INFO - Changes detected. Number of DDL statements: 4
+11-08-2024 12:46:10 - INFO - Database 'output' created successfully.
+11-08-2024 12:46:10 - INFO - No. of DDL Statements Left to Be Executed: 2
+11-08-2024 12:46:10 - DEBUG - Executed : DROP TABLE IF EXISTS pets
+11-08-2024 12:46:10 - INFO - No. of DDL Statements Left to Be Executed: 1
+11-08-2024 12:46:10 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS pets (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
     species VARCHAR(50) NOT NULL,
@@ -12,21 +12,19 @@
     date_of_adoption date,
     is_vaccinated boolean DEFAULT false,
     test VARCHAR(30) DEFAULT NULL,
-    color VARCHAR(30) DEFAULT NULL,
-    testfield VARCHAR(30) DEFAULT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
-11-08-2024 11:32:27 - INFO - Import to MySQL Succesfull!
-11-08-2024 11:32:27 - INFO - Database 'output' already exists.
-11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 6
-11-08-2024 11:32:27 - DEBUG - Executed : DROP TABLE IF EXISTS CUSTOMER
-11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 5
-11-08-2024 11:32:27 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'employees'
-11-08-2024 11:32:27 - INFO -  RETRYING...
-11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 5
-11-08-2024 11:32:27 - DEBUG - Executed : DROP TABLE IF EXISTS EMPLOYEES
-11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 4
-11-08-2024 11:32:27 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS EMPLOYEES (
+11-08-2024 12:46:10 - INFO - Import to MySQL Succesfull!
+11-08-2024 12:46:10 - INFO - Database 'output' already exists.
+11-08-2024 12:46:10 - INFO - No. of DDL Statements Left to Be Executed: 6
+11-08-2024 12:46:10 - DEBUG - Executed : DROP TABLE IF EXISTS CUSTOMER
+11-08-2024 12:46:10 - INFO - No. of DDL Statements Left to Be Executed: 5
+11-08-2024 12:46:10 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'employees'
+11-08-2024 12:46:10 - INFO -  RETRYING...
+11-08-2024 12:46:10 - INFO - No. of DDL Statements Left to Be Executed: 5
+11-08-2024 12:46:10 - DEBUG - Executed : DROP TABLE IF EXISTS EMPLOYEES
+11-08-2024 12:46:10 - INFO - No. of DDL Statements Left to Be Executed: 4
+11-08-2024 12:46:10 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS EMPLOYEES (
 	EMPLOYEEID INT NOT NULL AUTO_INCREMENT,
 	FIRSTNAME VARCHAR(100) NOT NULL,
 	LASTNAME VARCHAR(100) NOT NULL,
@@ -77,13 +75,13 @@
 	NOTES TEXT,
 	primary key (EMPLOYEEID)
 ) ENGINE=InnoDB;
-11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 3
-11-08-2024 11:32:27 - DEBUG - Executed : DROP TABLE IF EXISTS ORDERS
-11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 2
-11-08-2024 11:32:27 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'customer'
-11-08-2024 11:32:27 - INFO -  RETRYING...
-11-08-2024 11:32:27 - INFO - No. of DDL Statements Left to Be Executed: 2
-11-08-2024 11:32:28 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS CUSTOMER (
+11-08-2024 12:46:10 - INFO - No. of DDL Statements Left to Be Executed: 3
+11-08-2024 12:46:10 - DEBUG - Executed : DROP TABLE IF EXISTS ORDERS
+11-08-2024 12:46:10 - INFO - No. of DDL Statements Left to Be Executed: 2
+11-08-2024 12:46:10 - WARNING - Execution Failed: 1824 (HY000): Failed to open the referenced table 'customer'
+11-08-2024 12:46:10 - INFO -  RETRYING...
+11-08-2024 12:46:10 - INFO - No. of DDL Statements Left to Be Executed: 2
+11-08-2024 12:46:10 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS CUSTOMER (
 	CUSTOMERID INT NOT NULL AUTO_INCREMENT,
 	CUSTOMERNAME VARCHAR(100) NOT NULL,
 	CONTACTNUMBER VARCHAR(20),
@@ -93,8 +91,8 @@
 	primary key (CUSTOMERID),
 	foreign key (SALESREPID) references EMPLOYEES(EMPLOYEEID)
 ) ENGINE=InnoDB;
-11-08-2024 11:32:28 - INFO - No. of DDL Statements Left to Be Executed: 1
-11-08-2024 11:32:28 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS ORDERS (
+11-08-2024 12:46:10 - INFO - No. of DDL Statements Left to Be Executed: 1
+11-08-2024 12:46:10 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS ORDERS (
 	ORDERID INT NOT NULL AUTO_INCREMENT,
 	ORDERDATE DATE NOT NULL,
 	TOTALAMOUNT DECIMAL(10,2) NOT NULL,
@@ -104,21 +102,18 @@
 	foreign key (CUSTOMERID) references CUSTOMER(CUSTOMERID),
 	foreign key (EMPLOYEEID) references EMPLOYEES(EMPLOYEEID)
 ) ENGINE=InnoDB;
-11-08-2024 11:32:28 - INFO - Import to MySQL Succesfull!
-11-08-2024 11:32:28 - INFO - Migration of changes completed successfully.
-11-08-2024 11:32:41 - DEBUG - No changes detected.
-11-08-2024 11:32:53 - DEBUG - No changes detected.
-11-08-2024 11:33:06 - DEBUG - No changes detected.
-11-08-2024 11:33:19 - DEBUG - No changes detected.
-11-08-2024 11:33:32 - DEBUG - No changes detected.
-11-08-2024 11:33:46 - DEBUG - No changes detected.
-11-08-2024 11:34:00 - DEBUG - No changes detected.
-11-08-2024 11:34:13 - INFO - Changes detected. Number of DDL statements: 1
-11-08-2024 11:34:13 - INFO - Database 'output' already exists.
-11-08-2024 11:34:13 - INFO - No. of DDL Statements Left to Be Executed: 2
-11-08-2024 11:34:13 - DEBUG - Executed : DROP TABLE IF EXISTS pets
-11-08-2024 11:34:13 - INFO - No. of DDL Statements Left to Be Executed: 1
-11-08-2024 11:34:13 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS pets (
+11-08-2024 12:46:10 - INFO - Import to MySQL Succesfull!
+11-08-2024 12:46:10 - INFO - Migration of changes completed successfully.
+11-08-2024 12:46:24 - DEBUG - No changes detected.
+11-08-2024 12:46:37 - DEBUG - No changes detected.
+11-08-2024 12:46:51 - INFO - Changes detected. Number of DDL statements: 2
+11-08-2024 12:46:51 - INFO - Database 'output' already exists.
+11-08-2024 12:46:51 - INFO - No. of DDL Statements Left to Be Executed: 3
+11-08-2024 12:46:51 - DEBUG - Executed : DROP TABLE IF EXISTS public.pets
+11-08-2024 12:46:51 - INFO - No. of DDL Statements Left to Be Executed: 2
+11-08-2024 12:46:51 - DEBUG - Executed : DROP TABLE IF EXISTS pets
+11-08-2024 12:46:51 - INFO - No. of DDL Statements Left to Be Executed: 1
+11-08-2024 12:46:51 - DEBUG - Executed : CREATE TABLE IF NOT EXISTS pets (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
     species VARCHAR(50) NOT NULL,
@@ -126,12 +121,19 @@
     owner_name VARCHAR(100) DEFAULT NULL,
     date_of_adoption date,
     is_vaccinated boolean DEFAULT false,
-    test VARCHAR(30) DEFAULT NULL,
-    color VARCHAR(30) DEFAULT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
-11-08-2024 11:34:13 - INFO - Import to MySQL Succesfull!
-11-08-2024 11:34:13 - INFO - Migration of changes completed successfully.
-11-08-2024 11:34:26 - DEBUG - No changes detected.
-11-08-2024 11:34:39 - DEBUG - No changes detected.
-11-08-2024 11:34:53 - DEBUG - No changes detected.
+11-08-2024 12:46:51 - INFO - Import to MySQL Succesfull!
+11-08-2024 12:46:51 - INFO - Migration of changes completed successfully.
+11-08-2024 12:47:04 - DEBUG - No changes detected.
+11-08-2024 12:47:18 - DEBUG - No changes detected.
+11-08-2024 12:47:31 - DEBUG - No changes detected.
+11-08-2024 12:47:44 - INFO - Changes detected. Number of DDL statements: 2
+11-08-2024 12:47:44 - INFO - Database 'output' already exists.
+11-08-2024 12:47:44 - INFO - No. of DDL Statements Left to Be Executed: 1
+11-08-2024 12:47:44 - DEBUG - Executed : DROP TABLE IF EXISTS ORDERS
+11-08-2024 12:47:44 - INFO - Import to MySQL Succesfull!
+11-08-2024 12:47:44 - INFO - Migration of changes completed successfully.
+11-08-2024 12:47:57 - DEBUG - No changes detected.
+11-08-2024 12:48:10 - DEBUG - No changes detected.
+11-08-2024 12:48:24 - DEBUG - No changes detected.

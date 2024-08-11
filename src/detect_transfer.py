@@ -22,11 +22,27 @@ class DDLChangeDetector:
     def __init__(self):
         self.previous_ddl = {}
 
-    def detect_changes(self, current_ddl: Dict[str, List[str]]) -> Dict[str, List[str]]:
+    # def detect_changes(self, current_ddl: Dict[str, List[str]]) -> Dict[str, List[str]]:
+    #     changes = {}
+    #     for source, ddl_list in current_ddl.items():
+    #         if source not in self.previous_ddl or ddl_list != self.previous_ddl[source]:
+    #             changes[source] = ddl_list
+        
+    #     self.previous_ddl = current_ddl.copy()
+    #     return changes
+    
+    def detect_changes(self, current_ddl: Dict[str, List[str]]) -> Dict[str, Dict[str, List[str]]]:
         changes = {}
         for source, ddl_list in current_ddl.items():
-            if source not in self.previous_ddl or ddl_list != self.previous_ddl[source]:
-                changes[source] = ddl_list
+            if source not in self.previous_ddl:
+                changes[source] = {'added': ddl_list, 'removed': []}
+            else:
+                current_set = set(ddl_list)
+                previous_set = set(self.previous_ddl[source])
+                added = current_set - previous_set
+                removed = previous_set - current_set
+                if added or removed:
+                    changes[source] = {'added': list(added), 'removed': list(removed)}
         
         self.previous_ddl = current_ddl.copy()
         return changes
@@ -70,7 +86,41 @@ class DDLTransferManager:
                 current_ddl[source] = method(source_config)
         return current_ddl
 
-    def process_changes(self, changes: Dict[str, List[str]]) -> None:
+    # def process_changes(self, changes: Dict[str, List[str]]) -> None:
+    #     for destination in self.destination_list:
+    #         destination_config = dict(self.config[destination])
+            
+    #         if destination == 'snowflake':
+    #             importer = SnowflakeImporter(destination_config)
+    #             converter = ToSnowflakeConverter()
+    #         elif destination == 'mysql':
+    #             importer = MySQLImporter(destination_config)
+    #             converter = ToMySQLConverter()
+    #         elif destination == 'postgres':
+    #             importer = PostgresImporter(destination_config)
+    #             converter = ToPostgresConverter()
+    #         else:
+    #             raise ValueError(f"Unsupported destination type: {destination}")
+
+            
+    #         for source, ddl_list in changes.items():
+    #             modified_ddl_list = []
+    #             for ddl in ddl_list:
+    #                 table_name = self.extract_table_name(ddl)
+                    
+    #                 #coneriting syntax
+    #                 table_name = re.sub(r'`','',table_name)
+    #                 table_name = re.sub(r'\w+\.(\w+)',r'\1',table_name)
+    #                 drop_ddl = f"DROP TABLE IF EXISTS {table_name}"
+                    
+    #                 create_ddl = converter.to_snowflake(ddl) if destination == 'snowflake' else \
+    #                             converter.to_mysql(ddl) if destination == 'mysql' else \
+    #                             converter.to_postgres(ddl)
+    #                 modified_ddl_list.extend([drop_ddl, create_ddl])
+                
+    #             importer.import_ddl(modified_ddl_list)
+    
+    def process_changes(self, changes: Dict[str, Dict[str, List[str]]]) -> None:
         for destination in self.destination_list:
             destination_config = dict(self.config[destination])
             
@@ -86,20 +136,27 @@ class DDLTransferManager:
             else:
                 raise ValueError(f"Unsupported destination type: {destination}")
 
-            
-            for source, ddl_list in changes.items():
+            for source, change_dict in changes.items():
                 modified_ddl_list = []
-                for ddl in ddl_list:
+                
+                # Process removed tables
+                for ddl in change_dict['removed']:
+                    table_name = self.extract_table_name(ddl)
+                    drop_ddl = f"DROP TABLE IF EXISTS {table_name}"
+                    modified_ddl_list.append(drop_ddl)
+                
+                # Process added or modified tables
+                for ddl in change_dict['added']:
                     table_name = self.extract_table_name(ddl)
                     
-                    #coneriting syntax
+                    # coneriting syntax
                     table_name = re.sub(r'`','',table_name)
                     table_name = re.sub(r'\w+\.(\w+)',r'\1',table_name)
-                    
                     drop_ddl = f"DROP TABLE IF EXISTS {table_name}"
+                    
                     create_ddl = converter.to_snowflake(ddl) if destination == 'snowflake' else \
-                                converter.to_mysql(ddl) if destination == 'mysql' else \
-                                converter.to_postgres(ddl)
+                                 converter.to_mysql(ddl) if destination == 'mysql' else \
+                                 converter.to_postgres(ddl)
                     modified_ddl_list.extend([drop_ddl, create_ddl])
                 
                 importer.import_ddl(modified_ddl_list)
@@ -111,7 +168,6 @@ class DDLTransferManager:
             table_index = words.index('TABLE', create_index)
             return words[table_index + 1]
         except Exception as e:
-            print("in exception")
             pattern = r'create\s+or\s+replace\s+TABLE\s+(?:[\w\.]+\.)*(\w+)'
             match = re.search(pattern, ddl, re.IGNORECASE)
             if match:
@@ -130,8 +186,8 @@ class DDLTransferManager:
                 
                 if changes:
                     total_changes = sum(len(ddl_list) for ddl_list in changes.values())
-                    logging.info(f"Changes detected. Number of DDL statements: {total_changes}")
-                    print(f"Changes detected. Number of DDL statements: {total_changes}")
+                    logging.info(f"CHANGES DETECTED. Number of DDL statements: {total_changes}")
+                    print(f"CHANGES DETECTED. Number of DDL statements: {total_changes}")
                     self.process_changes(changes)
                     
                     logging.info("Migration of changes completed successfully.")
