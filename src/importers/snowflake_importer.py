@@ -71,7 +71,7 @@ class SnowflakeImporter:
                     execution_count+=1
                     cursor.execute(ddl)
                     done_executing+=1
-                    logging.debug(f"Executed DDL Succesfully: {ddl}")
+                    logging.debug(f"Executed: {ddl}")
                     
                     
                 except ProgrammingError as e:

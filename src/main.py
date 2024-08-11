@@ -10,7 +10,7 @@ def main():
     parser = argparse.ArgumentParser(description='Enter Source with -s or --source & Destination with -d or --destination for DDL migration-conversion')
     parser.add_argument('-s', '--source', type=str, nargs='+', help="List of source elements")
     parser.add_argument('-d', '--destination', type=str, nargs='+', help="List of destination elements")
-    parser.add_argument('-i', '--interval', type=int, default=10, help="Check interval in seconds")
+    parser.add_argument('-i', '--interval', type=int, default=5, help="Check interval in seconds")
     args = parser.parse_args()
     
     source_list = args.source if args.source else []

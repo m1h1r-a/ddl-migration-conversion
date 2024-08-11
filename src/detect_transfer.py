@@ -142,16 +142,19 @@ class DDLTransferManager:
                 # Process removed tables
                 for ddl in change_dict['removed']:
                     table_name = self.extract_table_name(ddl)
+                    
+                    table_name = re.sub(r'`','',table_name)
+                    table_name = re.sub(r'\w+\.(\w+)',r'\1',table_name)
                     drop_ddl = f"DROP TABLE IF EXISTS {table_name}"
                     modified_ddl_list.append(drop_ddl)
                 
                 # Process added or modified tables
                 for ddl in change_dict['added']:
                     table_name = self.extract_table_name(ddl)
-                    
                     # coneriting syntax
                     table_name = re.sub(r'`','',table_name)
                     table_name = re.sub(r'\w+\.(\w+)',r'\1',table_name)
+                    
                     drop_ddl = f"DROP TABLE IF EXISTS {table_name}"
                     
                     create_ddl = converter.to_snowflake(ddl) if destination == 'snowflake' else \
