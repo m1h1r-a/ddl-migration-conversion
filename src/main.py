@@ -2,8 +2,7 @@ import logging
 import argparse
 from detect_transfer import DDLTransferManager
 
-logging.basicConfig(filename='ddl_migration.log', filemode='w', level=logging.DEBUG, 
-                    format='%(asctime)s - %(levelname)s - %(message)s', datefmt="%d-%m-%Y %H:%M:%S")
+logging.basicConfig(filename='ddl_migration.log', filemode='w', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', datefmt="%d-%m-%Y %H:%M:%S")
 logging.getLogger('snowflake.connector').setLevel(logging.WARNING)
 
 def main():
