@@ -15,6 +15,73 @@ Real-time database schema migration tool that automatically detects and replicat
 └─────────────┘    └──────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
+## 🔧 Low-Level System Flow
+
+```
+┌───────────────────────────────────────────────────────────────────────────────────────┐
+│                                    main.py (CLI)                                      │
+│  ┌─────────────────────────────────────────────────────────────────────────────────┐  │
+│  │ Args: -s [mysql,postgres,snowflake] -d [mysql,postgres,snowflake] -i interval   │  │
+│  └─────────────────────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────┬─────────────────────────────────────────────────────┘
+                                  │
+                                  ▼
+┌───────────────────────────────────────────────────────────────────────────────────────┐
+│                          DDLTransferManager.run()                                     │
+│ ┌─────────────────────────────────────────────────────────────────────────────────┐   │
+│ │                        Continuous Loop (every N seconds)                        │   │
+│ │                                                                                 │   │
+│ │  1. get_current_ddl() ──────▶ Extract DDL from all sources                      │   │
+│ │  2. detect_changes() ────────▶ Compare with previous state                      │   │
+│ │  3. process_changes() ───────▶ Apply changes to destinations                    │   │
+│ │                                                                                 │   │
+│ └─────────────────────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────┬─────────────────────────────────────────────────────┘
+                                  │
+                 ┌────────────────┼────────────────┐
+                 ▼                ▼                ▼
+        ┌─────────────┐   ┌─────────────┐   ┌─────────────┐
+        │  EXTRACT    │   │   DETECT    │   │  PROCESS    │
+        │             │   │             │   │             │
+        │ ┌─────────┐ │   │ ┌─────────┐ │   │ ┌─────────┐ │
+        │ │ MySQL   │ │   │ │ Compare │ │   │ │ MySQL   │ │
+        │ │Extractor│ │   │ │ Current │ │   │ │Importer │ │
+        │ └─────────┘ │   │ │   vs    │ │   │ └─────────┘ │
+        │ ┌─────────┐ │   │ │Previous │ │   │ ┌─────────┐ │
+        │ │Postgres │ │   │ │  DDL    │ │   │ │Postgres │ │
+        │ │Extractor│ │   │ │ States  │ │   │ │Importer │ │
+        │ └─────────┘ │   │ └─────────┘ │   │ └─────────┘ │
+        │ ┌─────────┐ │   │      │      │   │ ┌─────────┐ │
+        │ │Snowflake│ │   │      ▼      │   │ │Snowflake│ │
+        │ │Extractor│ │   │ ┌─────────┐ │   │ │Importer │ │
+        │ └─────────┘ │   │ │ Added   │ │   │ └─────────┘ │
+        └─────────────┘   │ │Removed  │ │   └─────────────┘
+                          │ │Modified │ │           ▲
+                          │ │ Tables  │ │           │
+                          │ └─────────┘ │    ┌─────────────┐
+                          └─────────────┘    │  CONVERT    │
+                                             │             │
+                                             │ ┌─────────┐ │
+                                             │ │ToMySQL  │ │
+                                             │ │Converter│ │
+                                             │ └─────────┘ │
+                                             │ ┌─────────┐ │
+                                             │ │ToPostgres││
+                                             │ │Converter│ │
+                                             │ └─────────┘ │
+                                             │ ┌─────────┐ │
+                                             │ │ToSnowflake│ 
+                                             │ │Converter│ │
+                                             │ └─────────┘ │
+                                             └─────────────┘
+
+Key Components:
+• Extractors: Query SHOW CREATE TABLE, information_schema, or DDL views
+• Change Detector: Set difference algorithm to identify added/removed tables  
+• Converters: Regex-based syntax translation (INT→INTEGER, backticks→quotes)
+• Importers: Execute DROP/CREATE statements with error handling & logging
+```
+
 ## ✨ Features
 
 ### 🔄 Real-time Schema Monitoring
@@ -27,7 +94,7 @@ Real-time database schema migration tool that automatically detects and replicat
 - **Type Mapping**: Intelligent data type conversion (INT→INTEGER, DATETIME→TIMESTAMP)
 - **Schema Preservation**: Maintains table structures and constraints
 
-### 🛡️ Production-Ready Features
+### 🛡️ Features
 - **Error Recovery**: Graceful handling with continued monitoring on failures
 - **Comprehensive Logging**: Detailed logs in `ddl_migration.log`
 - **Database Auto-Creation**: Creates destination databases if they don't exist
@@ -68,16 +135,19 @@ schema = PUBLIC
 
 ### Usage Examples
 
-**Single Source to Multiple Destinations:**
+**Single Source to Single Destination:**
 ```bash
-python src/main.py -s mysql -d postgres snowflake
+python src/main.py -s mysql -d snowflake
 ```
 
+**Single Source to Multiple Destinations:**
+```bash
+python src/main.py -s mysql -d snowflake postgres 
+```
 **Multiple Sources to Single Destination:**
 ```bash
 python src/main.py -s mysql postgres -d snowflake
 ```
-
 **Custom Monitoring Interval:**
 ```bash
 python src/main.py -s mysql -d postgres -i 30  # Check every 30 seconds
